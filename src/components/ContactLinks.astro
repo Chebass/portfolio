@@ -1,0 +1,359 @@
+---
+import { Copy, Check, Mail } from "@lucide/astro";
+import { siGithub, siWhatsapp, siInstagram } from "simple-icons";
+
+const email = "seb.delca.22@gmail.com";
+const networks = [
+  {
+    name: "LinkedIn",
+    href: "https://www.linkedin.com/in/sebastian-delgado-355907252/",
+    path: "M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.049c.476-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z",
+    color: "#0A66C2",
+  },
+  {
+    name: "GitHub",
+    href: "https://github.com/Chebass",
+    path: siGithub.path,
+    color: "#F2F1EC",
+  },
+  {
+    name: "WhatsApp",
+    href: "https://wa.me/51982280618",
+    path: siWhatsapp.path,
+    color: "#25D366",
+  },
+  {
+    name: "Instagram",
+    href: "https://www.instagram.com/sebassdelgao/",
+    path: siInstagram.path,
+    color: "#E4405F",
+  },
+];
+---
+
+<div class="contact-actions reveal">
+  <div class="contact-networks">
+    <p>Colaboraciones y oportunidades profesionales.</p>
+    <nav class="network-icons" aria-label="Redes sociales">
+      {networks.map((network) => (
+        <a
+          href={network.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${network.name} (abre en una pestaña nueva)`}
+          style={`--network-color:${network.color}`}
+        >
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d={network.path} />
+          </svg>
+          <span class="network-tooltip" aria-hidden="true">
+            {network.name}
+          </span>
+        </a>
+      ))}
+    </nav>
+  </div>
+  <div class="email-panel">
+    <div class="email-copy-group">
+      <span class="email-label">ESCRÍBEME DIRECTAMENTE</span>
+      <div class="email-line">
+        <a class="email-address" href={`mailto:${email}`}>
+          {email}
+        </a>
+        <button
+          class="copy-email"
+          type="button"
+          data-copy-email={email}
+          aria-label="Copiar correo electrónico"
+          title="Copiar correo electrónico"
+        >
+          <Copy
+            size={17}
+            stroke-width={1.75}
+            data-copy-icon
+            aria-hidden="true"
+          />
+          <Check
+            size={17}
+            stroke-width={1.75}
+            data-check-icon
+            aria-hidden="true"
+          />
+        </button>
+      </div>
+      <span
+        class="copy-status"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      ></span>
+    </div>
+    <a class="button button-light email-send" href={`mailto:${email}`}>
+      <span>Enviar correo</span>
+      <span class="button-icon">
+        <Mail size={18} stroke-width={1.75} aria-hidden="true" />
+      </span>
+    </a>
+  </div>
+</div>
+<script>
+  document
+    .querySelectorAll<HTMLButtonElement>("[data-copy-email]")
+    .forEach((button) => {
+      const group = button.closest(".email-copy-group")!;
+      const status = group.querySelector<HTMLElement>(".copy-status")!;
+      let resetTimer: ReturnType<typeof setTimeout>;
+      button.addEventListener("click", async () => {
+        clearTimeout(resetTimer);
+        button.disabled = true;
+        try {
+          await navigator.clipboard.writeText(button.dataset.copyEmail!);
+          button.dataset.copied = "true";
+          button.setAttribute("aria-label", "Correo copiado");
+          button.title = "Correo copiado";
+          status.textContent = "Correo copiado";
+        } catch {
+          delete button.dataset.copied;
+          const address = group.querySelector(".email-address")!;
+          const selection = window.getSelection();
+          const range = document.createRange();
+          range.selectNodeContents(address);
+          selection?.removeAllRanges();
+          selection?.addRange(range);
+          status.textContent =
+            "No se pudo copiar. Selecciona y copia el correo.";
+        } finally {
+          button.disabled = false;
+          resetTimer = setTimeout(() => {
+            delete button.dataset.copied;
+            button.setAttribute("aria-label", "Copiar correo electrónico");
+            button.title = "Copiar correo electrónico";
+            status.textContent = "";
+          }, 3500);
+        }
+      });
+    });
+</script>
+<style>
+  .contact-actions {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 45px;
+    margin-top: 55px;
+  }
+  .contact-networks > p {
+    font-size: 12px;
+    line-height: 1.8;
+    color: var(--muted);
+    margin: 0 0 20px;
+  }
+  .network-icons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .network-icons a {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 54px;
+    height: 54px;
+    color: #bacbd0;
+    border: 1px solid #35474d;
+    border-radius: 15px;
+    background: linear-gradient(145deg, #1c272b, #101719);
+    box-shadow:
+      inset 0 1px #ffffff0e,
+      0 5px 16px #0003;
+    transition:
+      color 0.25s,
+      transform 0.25s,
+      border-color 0.25s,
+      box-shadow 0.25s;
+  }
+  .network-icons svg {
+    width: 23px;
+    height: 23px;
+  }
+  .network-tooltip {
+    position: absolute;
+    top: calc(100% + 9px);
+    left: 50%;
+    transform: translate(-50%, -4px);
+    font-size: 10px;
+    white-space: nowrap;
+    color: var(--text);
+    background: #1b2529;
+    border: 1px solid #35474d;
+    border-radius: 6px;
+    padding: 6px 9px;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity 0.2s,
+      transform 0.2s,
+      visibility 0.2s;
+    z-index: 2;
+  }
+  .network-icons a:focus-visible .network-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, 0);
+  }
+  .email-panel {
+    display: flex;
+    align-items: end;
+    gap: 24px;
+  }
+  .email-copy-group {
+    position: relative;
+    padding-bottom: 4px;
+    min-width: 0;
+  }
+  .email-label {
+    display: block;
+    font-size: 8px;
+    letter-spacing: 1.6px;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .email-line {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .email-address {
+    font-size: 14px;
+    letter-spacing: -0.15px;
+    line-height: 1.6;
+    transition: color 0.25s;
+  }
+  .email-address:hover {
+    color: var(--accent);
+  }
+  .copy-email {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    cursor: pointer;
+    color: var(--accent);
+    background: #1c292e;
+    border: 1px solid #3a5058;
+    border-radius: 10px;
+    transition:
+      background 0.25s,
+      border-color 0.25s,
+      transform 0.25s;
+  }
+  .copy-email:disabled {
+    cursor: wait;
+  }
+  .copy-email[data-copied="true"] {
+    color: #a8e0c5;
+    border-color: #609780;
+  }
+  .copy-email :global([data-check-icon]) {
+    display: none;
+  }
+  .copy-email[data-copied="true"] :global([data-check-icon]) {
+    display: block;
+  }
+  .copy-email[data-copied="true"] :global([data-copy-icon]) {
+    display: none;
+  }
+  .copy-status {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    font-size: 10px;
+    line-height: 1.5;
+    color: var(--accent);
+    max-width: 280px;
+  }
+  .email-send {
+    white-space: nowrap;
+    font-size: 12px;
+    gap: 20px;
+  }
+  @media (hover: hover) {
+    .network-icons a:hover {
+      color: var(--network-color);
+      border-color: var(--network-color);
+      transform: translateY(-4px);
+      box-shadow:
+        inset 0 1px #ffffff14,
+        0 8px 24px #0005;
+    }
+    .network-icons a:hover .network-tooltip {
+      opacity: 1;
+      visibility: visible;
+      transform: translate(-50%, 0);
+    }
+    .copy-email:hover {
+      background: #293e47;
+      border-color: #89b4c1;
+      transform: translateY(-2px);
+    }
+  }
+  @media (max-width: 1100px) {
+    .contact-actions {
+      gap: 30px;
+    }
+    .email-panel {
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 22px;
+    }
+    .email-copy-group {
+      margin-bottom: 8px;
+    }
+  }
+  @media (max-width: 760px) {
+    .contact-actions {
+      grid-template-columns: 1fr;
+      gap: 46px;
+      margin-top: 36px;
+    }
+    .email-panel {
+      align-items: flex-start;
+      gap: 25px;
+    }
+    .contact-networks > p {
+      font-size: 12px;
+    }
+    .network-icons a {
+      width: 52px;
+      height: 52px;
+    }
+    .email-line {
+      gap: 12px;
+    }
+    .email-address {
+      font-size: 14px;
+    }
+    .copy-status {
+      left: 0;
+      right: auto;
+      width: 280px;
+    }
+    .email-copy-group {
+      margin-bottom: 0;
+    }
+    .email-send {
+      margin-top: 8px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      transition: none !important;
+    }
+    .network-icons a:hover,
+    .copy-email:hover {
+      transform: none;
+    }
+  }
+</style>

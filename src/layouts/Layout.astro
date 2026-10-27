@@ -1,0 +1,67 @@
+---
+import "@fontsource-variable/inter";
+import "@fontsource/instrument-serif/latin-400-italic.css";
+import "../styles/global.css";
+import "../styles/interactions.css";
+import { ArrowUpRight, ArrowUp, Asterisk } from "@lucide/astro";
+interface Props {
+  title?: string;
+  description?: string;
+}
+const {
+  title = "Sebastian Delgado — AI Engineering / Full Stack Developer",
+  description = "Portfolio de Sebastian Delgado. Inteligencia artificial, desarrollo full stack y productos digitales.",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#080808" />
+    <title>{title}</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido">
+      Saltar al contenido
+    </a>
+    <header class="navigation shell">
+      <a class="wordmark" href="/" aria-label="Sebastián Delgado, inicio">
+        Sebas
+        <span>
+          <Asterisk size={12} aria-hidden="true" />
+        </span>
+      </a>
+      <nav aria-label="Principal">
+        <a href="/#proyectos">Proyectos</a>
+        <a href="/#sobre-mi">Sobre mí</a>
+        <a href="/#stack">Stack</a>
+      </nav>
+      <a class="nav-contact" href="/#contacto">
+        Hablemos{" "}
+        <span class="button-icon">
+          <ArrowUpRight size={16} aria-hidden="true" />
+        </span>
+      </a>
+    </header>
+    <main id="contenido">
+      <slot />
+    </main>
+    <footer class="shell footer">
+      <a class="wordmark" href="/">
+        Sebas
+        <span>
+          <Asterisk size={12} aria-hidden="true" />
+        </span>
+      </a>
+      <span>Diseñado con intención. Construido con curiosidad.</span>
+      <a href="#contenido">
+        Volver arriba <ArrowUp size={14} aria-hidden="true" />
+      </a>
+    </footer>
+    <script src="../scripts/motion.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,445 @@
+---
+import {
+  BrainCircuit,
+  PanelsTopLeft,
+  Server,
+  Database,
+  Plus,
+} from "@lucide/astro";
+import {
+  siReact,
+  siNextdotjs,
+  siTypescript,
+  siRedux,
+  siNestjs,
+  siFastapi,
+  siDotnet,
+  siNodedotjs,
+  siPostgresql,
+  siPrisma,
+  siPython,
+  siOllama,
+  siDocker,
+  siGit,
+  siGithubactions,
+  siAnthropic,
+  siGooglegemini,
+} from "simple-icons";
+import type { SimpleIcon } from "simple-icons";
+interface Technology {
+  icon: SimpleIcon;
+  name: string;
+}
+interface Group {
+  name: string;
+  label: string;
+  symbol: typeof BrainCircuit;
+  description: string;
+  items: Technology[];
+  extra: string[];
+}
+const groups: Group[] = [
+  {
+    name: "AI Engineering",
+    label: "INTELIGENCIA APLICADA",
+    symbol: BrainCircuit,
+    description:
+      "Asistentes conversacionales, integración de LLM, RAG, embeddings y búsqueda vectorial.",
+    items: [
+      { icon: siPython, name: "Python" },
+      { icon: siFastapi, name: "FastAPI" },
+      { icon: siAnthropic, name: "Anthropic" },
+      { icon: siGooglegemini, name: "Gemini" },
+      { icon: siOllama, name: "Ollama" },
+    ],
+    extra: ["OpenAI APIs", "RAG", "Embeddings", "Vector Search"],
+  },
+  {
+    name: "Frontend",
+    label: "EXPERIENCIAS DIGITALES",
+    symbol: PanelsTopLeft,
+    description:
+      "Interfaces de aplicaciones empresariales, gestión de estado y consumo de APIs.",
+    items: [
+      { icon: siReact, name: "React" },
+      { icon: siNextdotjs, name: "Next.js" },
+      { icon: siTypescript, name: "TypeScript" },
+      { icon: siRedux, name: "Redux Toolkit" },
+    ],
+    extra: ["RTK Query", "HTML5", "CSS3"],
+  },
+  {
+    name: "Backend",
+    label: "LO QUE HACE QUE FUNCIONE",
+    symbol: Server,
+    description:
+      "Servicios, APIs REST y módulos de negocio de extremo a extremo.",
+    items: [
+      { icon: siNestjs, name: "NestJS" },
+      { icon: siFastapi, name: "FastAPI" },
+      { icon: siDotnet, name: "ASP.NET Core" },
+      { icon: siNodedotjs, name: "Node.js" },
+    ],
+    extra: ["REST APIs", "Microservicios", "Arquitectura modular"],
+  },
+  {
+    name: "Datos & DevOps",
+    label: "BASES SÓLIDAS",
+    symbol: Database,
+    description:
+      "Modelado de datos, consultas y automatización de builds, pruebas y despliegues.",
+    items: [
+      { icon: siPostgresql, name: "PostgreSQL" },
+      { icon: siPrisma, name: "Prisma" },
+      { icon: siDocker, name: "Docker" },
+      { icon: siGit, name: "Git" },
+      { icon: siGithubactions, name: "GitHub Actions" },
+    ],
+    extra: ["AWS", "Azure", "SQL Server", "MySQL", "CI/CD"],
+  },
+];
+// Las marcas oscuras conservan su color sobre una placa clara.
+function needsLightPlate(hex: string) {
+  const channels = hex
+    .match(/.{2}/g)!
+    .map((channel) => parseInt(channel, 16) / 255);
+  return (
+    channels[0] * 0.2126 + channels[1] * 0.7152 + channels[2] * 0.0722 < 0.4
+  );
+}
+---
+
+<div class="tech-cabinet">
+  {groups.map((group, index) => (
+    <details class="tech-drawer reveal" data-pointer-glow>
+      <summary class="drawer-face">
+        <span class="drawer-topline">
+          <span class="drawer-index">0{index + 1}</span>
+          <span>{group.label}</span>
+          <group.symbol size={20} stroke-width={1.5} aria-hidden="true" />
+        </span>
+        <span class="drawer-title">{group.name}</span>
+        <span class="drawer-bottomline">
+          <span class="drawer-handle" aria-hidden="true"></span>
+          <span class="drawer-invitation">
+            <span class="when-closed">Explorar stack</span>
+            <span class="when-open">Cerrar cajón</span>
+            <Plus size={16} stroke-width={1.5} aria-hidden="true" />
+          </span>
+        </span>
+      </summary>
+      <div class="drawer-content">
+        <div class="drawer-tray">
+          <p>{group.description}</p>
+          <div class="tech-icons">
+            {group.items.map(({ icon, name }) => (
+              <div class="tech-item" style={`--brand-color:#${icon.hex}`}>
+                <span
+                  class:list={[
+                    "tech-logo",
+                    { "light-plate": needsLightPlate(icon.hex) },
+                  ]}
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path d={icon.path} />
+                  </svg>
+                </span>
+                <span>{name}</span>
+              </div>
+            ))}
+          </div>
+          <div class="tech-extra">
+            {group.extra.map((item) => (
+              <span>{item}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </details>
+  ))}
+</div>
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  document
+    .querySelectorAll<HTMLDetailsElement>(".tech-drawer")
+    .forEach((drawer) => {
+      const summary = drawer.querySelector<HTMLElement>("summary")!;
+      const content = drawer.querySelector<HTMLElement>(".drawer-content")!;
+      let expanded = drawer.open;
+      summary.setAttribute("aria-expanded", String(expanded));
+      summary.addEventListener("click", (event) => {
+        event.preventDefault();
+        expanded = !expanded;
+        summary.setAttribute("aria-expanded", String(expanded));
+        gsap.killTweensOf(content);
+        const currentHeight = drawer.open
+          ? content.getBoundingClientRect().height
+          : 0;
+        drawer.open = true;
+        drawer.classList.toggle("is-expanded", expanded);
+        gsap.fromTo(
+          content,
+          { height: currentHeight, overflow: "hidden" },
+          {
+            height: expanded ? content.scrollHeight : 0,
+            duration: window.matchMedia("(prefers-reduced-motion: reduce)")
+              .matches
+              ? 0
+              : 0.55,
+            ease: "power3.inOut",
+            onComplete: () => {
+              drawer.open = expanded;
+              gsap.set(content, { clearProps: "height,overflow" });
+              ScrollTrigger.refresh();
+            },
+          },
+        );
+      });
+    });
+</script>
+<style>
+  .tech-cabinet {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+    align-items: start;
+  }
+  .tech-drawer {
+    position: relative;
+    isolation: isolate;
+    border: 1px solid #303839;
+    border-radius: 18px;
+    background: #0e1112;
+    box-shadow: 0 8px 24px #0005;
+    overflow: hidden;
+    --spot-x: 50%;
+    --spot-y: 0%;
+    --spot-opacity: 0;
+    transition:
+      border-color 0.35s,
+      box-shadow 0.35s;
+  }
+  .tech-drawer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    opacity: var(--spot-opacity);
+    background: radial-gradient(
+      340px circle at var(--spot-x) var(--spot-y),
+      #d0ebf215,
+      transparent 70%
+    );
+    transition: opacity 0.3s;
+  }
+  .tech-drawer[open] {
+    border-color: #566c73;
+    box-shadow:
+      0 18px 45px #0007,
+      0 0 30px #d0ebf205;
+  }
+  .drawer-face {
+    position: relative;
+    display: block;
+    cursor: pointer;
+    list-style: none;
+    padding: 26px 30px 25px;
+    background: linear-gradient(155deg, #202526 0%, #15191a 35%, #101314 100%);
+    border-radius: 17px 0px 0px;
+    box-shadow:
+      inset 0 1px #ffffff0c,
+      inset 0 -3px 0 #080a0b,
+      inset 0 -4px 0 #ffffff06;
+    transition: background 0.35s;
+  }
+  .drawer-face::-webkit-details-marker {
+    display: none;
+  }
+  .drawer-face::marker {
+    content: "";
+  }
+  .drawer-face:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -5px;
+  }
+  .drawer-topline {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    color: #9caeb3;
+    font-size: 8px;
+    letter-spacing: 1.8px;
+  }
+  .drawer-index {
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: #d0ebf2a0;
+    border-right: 1px solid #3a4447;
+    padding-right: 13px;
+  }
+  .drawer-topline :global(svg) {
+    margin-left: auto;
+    color: var(--accent);
+  }
+  .drawer-title {
+    display: block;
+    font-size: 30px;
+    letter-spacing: -1px;
+    margin: 28px 0 30px;
+    font-weight: 450;
+  }
+  .drawer-bottomline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .drawer-handle {
+    display: block;
+    width: 78px;
+    height: 12px;
+    border: 1px solid #4e5e63;
+    border-bottom-color: #233034;
+    border-radius: 5px;
+    background: linear-gradient(#334146, #171f22 50%, #0a0e10 51%);
+    box-shadow:
+      0 4px 5px #0008,
+      inset 0 1px #ffffff17;
+    transition:
+      transform 0.4s,
+      box-shadow 0.4s;
+  }
+  .drawer-face:hover .drawer-handle,
+  .is-expanded .drawer-handle {
+    transform: translateY(-2px);
+    box-shadow:
+      0 6px 9px #000b,
+      inset 0 1px #ffffff24;
+  }
+  .drawer-invitation {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 10px;
+    color: var(--muted);
+  }
+  .drawer-invitation :global(svg) {
+    transition: transform 0.4s;
+    color: var(--accent);
+  }
+  .is-expanded .drawer-invitation :global(svg) {
+    transform: rotate(45deg);
+  }
+  .when-open {
+    display: none;
+  }
+  .is-expanded .when-open {
+    display: inline;
+  }
+  .is-expanded .when-closed {
+    display: none;
+  }
+  .drawer-tray {
+    padding: 25px 30px 30px;
+    border-top: 1px solid #050708;
+    background: linear-gradient(#070a0bdd, #101516 24px);
+    box-shadow: inset 0 12px 20px #0005;
+  }
+  .drawer-tray > p {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.8;
+    margin: 0 0 24px;
+    max-width: 420px;
+  }
+  .tech-icons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
+    gap: 20px 12px;
+  }
+  .tech-item {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-size: 10px;
+    align-items: center;
+    text-align: center;
+    color: #c4ccce;
+  }
+  .tech-logo {
+    width: 54px;
+    height: 54px;
+    border: 1px solid #ffffff0c;
+    border-radius: 15px;
+    display: grid;
+    place-items: center;
+    background: #1a2225;
+    box-shadow: 0 5px 10px #0003;
+    transition:
+      transform 0.3s,
+      box-shadow 0.3s;
+  }
+  .tech-logo.light-plate {
+    background: #e7ecec;
+    border-color: #fff2;
+  }
+  .tech-logo svg {
+    width: 29px;
+    height: 29px;
+    color: var(--brand-color);
+  }
+  .tech-item:hover .tech-logo {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px #0005;
+  }
+  .tech-extra {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 26px;
+    padding-top: 20px;
+    border-top: 1px solid #283134;
+  }
+  .tech-extra span {
+    font-size: 9px;
+    padding: 7px 10px;
+    border: 1px solid #2d393c;
+    border-radius: 6px;
+    color: var(--muted);
+    background: #151c1e;
+  }
+  @media (max-width: 760px) {
+    .tech-cabinet {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .drawer-face {
+      padding: 23px;
+    }
+    .drawer-title {
+      font-size: 27px;
+      margin: 24px 0;
+    }
+    .drawer-tray {
+      padding: 24px 23px;
+    }
+    .drawer-topline {
+      letter-spacing: 1.2px;
+    }
+    .tech-icons {
+      grid-template-columns: repeat(auto-fit, minmax(66px, 1fr));
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::after {
+      transition: none !important;
+    }
+  }
+</style>

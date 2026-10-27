@@ -1,0 +1,31 @@
+{
+  "name": "sebastian-delgado-portfolio",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "24.x"
+  },
+  "scripts": {
+    "dev": "astro dev --host 127.0.0.1",
+    "build": "astro build",
+    "preview": "astro preview --host 127.0.0.1",
+    "check": "astro check",
+    "format": "prettier --write --ignore-unknown src public \"*.{mjs,json,md}\" .prettierrc.json",
+    "format:check": "prettier --check --ignore-unknown src public \"*.{mjs,json,md}\" .prettierrc.json"
+  },
+  "dependencies": {
+    "@fontsource-variable/inter": "^5.2.0",
+    "@fontsource/instrument-serif": "^5.2.0",
+    "@lucide/astro": "^1.61.0",
+    "astro": "^7.4.2",
+    "gsap": "^3.14.0",
+    "simple-icons": "^16.0.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.0",
+    "prettier": "3.9.10",
+    "prettier-plugin-astro": "1.1.2",
+    "typescript": "^5.9.0"
+  }
+}

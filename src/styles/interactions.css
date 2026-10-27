@@ -1,0 +1,277 @@
+/* Pointer light: coordinates are local to each surface, with no positional lag. */
+[data-pointer-glow] {
+  --spot-x: 50%;
+  --spot-y: 50%;
+  --spot-opacity: 0;
+}
+.hero {
+  isolation: isolate;
+}
+.hero > :not(.hero-glow) {
+  position: relative;
+  z-index: 1;
+}
+.hero-glow {
+  inset: 0;
+  width: auto;
+  height: auto;
+  opacity: var(--spot-opacity);
+  background: radial-gradient(
+    480px circle at var(--spot-x) var(--spot-y),
+    #a3d9e429,
+    #7eb7c30c 45%,
+    transparent 75%
+  );
+  transition: opacity 0.35s;
+}
+.project-art::after,
+.project-art:hover::after {
+  opacity: var(--spot-opacity);
+  background: radial-gradient(
+    320px circle at var(--spot-x) var(--spot-y),
+    #d0ebf225,
+    transparent 72%
+  );
+}
+
+/* Shared controls: inset icon, fine border and a restrained light sweep. */
+.button,
+.nav-contact {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  padding: 8px 8px 8px 24px;
+  min-height: 56px;
+  overflow: hidden;
+  border: 1px solid #53676d;
+  border-radius: 40px;
+  background: linear-gradient(135deg, #253136, #101719);
+  box-shadow:
+    inset 0 1px 0 #ffffff14,
+    0 4px 14px #0002;
+  transition:
+    transform 0.25s,
+    border-color 0.25s,
+    box-shadow 0.3s;
+}
+.button::before,
+.nav-contact::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(
+    110deg,
+    transparent 20%,
+    #ffffff35 50%,
+    transparent 80%
+  );
+  transform: translateX(-140%);
+  transition: transform 0.65s;
+}
+.button-light {
+  color: #142126;
+  border-color: #d0ebf2;
+  background: linear-gradient(130deg, #e2f4f8, #bedfe9);
+  box-shadow:
+    inset 0 1px #ffffffa0,
+    0 4px 20px #a3d7e30a;
+}
+.button-icon {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border: 1px solid #b7d4dc26;
+  border-radius: 50%;
+  background: #d0ebf20c;
+  box-shadow: inset 0 1px #ffffff10;
+  transition:
+    background 0.3s,
+    transform 0.3s;
+}
+.button-light .button-icon {
+  background: #172f3610;
+  border-color: #173b451f;
+}
+.button-icon svg {
+  transition: transform 0.3s;
+}
+.nav-contact {
+  min-height: 42px;
+  padding: 5px 5px 5px 18px;
+  font-size: 12px;
+  gap: 20px;
+}
+.nav-contact .button-icon {
+  margin: 0;
+  width: 30px;
+  height: 30px;
+}
+.circle-link {
+  width: 54px;
+  height: 54px;
+  background: linear-gradient(145deg, #202c30, #0a0e0f);
+  border-color: #43585f;
+  box-shadow:
+    inset 0 1px #ffffff10,
+    0 4px 15px #0003;
+  transition:
+    transform 0.3s,
+    background 0.3s,
+    color 0.3s,
+    border-color 0.3s,
+    box-shadow 0.3s;
+}
+.circle-link svg {
+  transition: transform 0.3s;
+}
+.text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 10px;
+  transition:
+    color 0.25s,
+    border-color 0.25s;
+}
+.text-link svg,
+.social-links svg {
+  flex-shrink: 0;
+  transition: transform 0.3s;
+}
+.social-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 17px;
+  border: 1px solid #2d393d;
+  border-radius: 10px;
+  background: #131a1c;
+  transition:
+    border-color 0.3s,
+    background 0.3s;
+}
+.hero-foot a,
+.footer > a:last-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.art-open {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid #b3dbe22b;
+  border-radius: 50%;
+  background: #0b141866;
+}
+.art-header {
+  align-items: center;
+}
+.concept-steps {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.contact-star {
+  line-height: 1;
+}
+
+@media (hover: hover) {
+  .button:hover,
+  .nav-contact:hover {
+    transform: translateY(-3px);
+    border-color: #b4d8e1;
+    box-shadow:
+      inset 0 1px #ffffff30,
+      0 8px 30px #a3d7e318;
+  }
+  .button:hover::before,
+  .nav-contact:hover::before {
+    transform: translateX(140%);
+  }
+  .button:hover .button-icon,
+  .nav-contact:hover .button-icon {
+    background: #d0ebf225;
+  }
+  .button-light:hover .button-icon {
+    background: #163b4520;
+  }
+  .button:hover .button-icon svg,
+  .nav-contact:hover svg {
+    transform: rotate(-8deg);
+  }
+  .circle-link:hover {
+    transform: translateY(-3px);
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #142126;
+    box-shadow: 0 8px 25px #a3d7e320;
+  }
+  .circle-link:hover svg,
+  .text-link:hover svg {
+    transform: translate(2px, -2px);
+  }
+  .social-links a:hover {
+    border-color: #7a9ba5;
+    background: #1c292e;
+  }
+  .social-links a:hover svg:last-child {
+    transform: translate(2px, -2px);
+  }
+}
+.button:active,
+.nav-contact:active,
+.circle-link:active {
+  transform: translateY(0) scale(0.98);
+}
+@media (max-width: 760px) {
+  .nav-contact {
+    padding: 4px 4px 4px 12px;
+    min-height: 36px;
+    font-size: 10px;
+    gap: 8px;
+  }
+  .nav-contact .button-icon {
+    width: 26px;
+    height: 26px;
+  }
+  .contact-star svg {
+    width: 60px;
+    height: 60px;
+  }
+  .social-links {
+    gap: 12px;
+  }
+  .social-links a {
+    font-size: 10px;
+    padding: 12px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-glow,
+  .project-art::after {
+    display: none;
+  }
+  .button::before,
+  .nav-contact::before {
+    display: none;
+  }
+  .button:hover,
+  .nav-contact:hover,
+  .circle-link:hover,
+  .text-link:hover svg,
+  .button:hover svg,
+  .circle-link:hover svg,
+  .nav-contact:hover svg,
+  .social-links a:hover svg {
+    transform: none;
+  }
+}

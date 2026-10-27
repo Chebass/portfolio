@@ -1,0 +1,224 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { projects } from "../data/projects";
+import TechStack from "../components/TechStack.astro";
+import {
+  ArrowUpRight,
+  ArrowDownRight,
+  ArrowDown,
+  MoveRight,
+  Sparkles,
+} from "@lucide/astro";
+import ContactLinks from "../components/ContactLinks.astro";
+---
+
+<Layout>
+  <section class="hero" data-pointer-glow>
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="hero-content shell">
+      <div class="hero-top">
+        <span class="eyebrow">
+          <i></i> SEBASTIAN DELGADO
+        </span>
+        <span class="index-label">PORTFOLIO</span>
+      </div>
+      <p class="hero-role reveal">AI Engineering / Full Stack Developer</p>
+      <h1>
+        Ideas que toman
+        <br />
+        <em>forma.</em> Código que
+        <br />
+        crea <span class="outline-text">posibilidades.</span>
+      </h1>
+      <div class="hero-bottom reveal">
+        <p>
+          De la inteligencia artificial a la experiencia digital.
+          <br />
+          Construyo soluciones que conectan ambas.
+        </p>
+        <a class="button button-light" href="#proyectos">
+          <span>Explorar proyectos</span>
+          <span class="button-icon">
+            <ArrowDownRight size={18} stroke-width={1.75} aria-hidden="true" />
+          </span>
+        </a>
+      </div>
+      <div class="hero-foot">
+        <span>PARA EQUIPOS CON IDEAS. PARA IDEAS CON FUTURO.</span>
+        <a href="#proyectos">
+          SCROLL PARA EXPLORAR <ArrowDown size={14} aria-hidden="true" />
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="proyectos" class="shell section projects">
+    <div class="section-heading reveal">
+      <div>
+        <span class="eyebrow">01 / TRABAJO SELECCIONADO</span>
+        <h2>
+          Detrás de cada interfaz,
+          <br />
+          <em>una solución.</em>
+        </h2>
+      </div>
+      <p>
+        Una mirada al proceso,
+        <br />
+        más allá de la pantalla.
+      </p>
+    </div>
+    <div class="project-list">
+      {projects.map((project, index) => (
+        <article class="project-card reveal">
+          <a
+            class:list={["project-art", `art-${index}`]}
+            data-pointer-glow
+            href={`/proyectos/${project.slug}`}
+            aria-label={`Explorar plantilla: ${project.title}`}
+          >
+            <div class="art-header">
+              <span>
+                {project.cover ? "VISTA DEL PROYECTO" : "VISTA CONCEPTUAL"} /{" "}
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <span class="art-open">
+                <ArrowUpRight size={20} stroke-width={1.5} aria-hidden="true" />
+              </span>
+            </div>
+            {project.cover ? (
+              <img
+                class="project-cover"
+                src={project.cover}
+                alt={`Vista principal de ${project.title}`}
+                width="1600"
+                height="1000"
+                loading="lazy"
+              />
+            ) : (
+              <div class="concept-art" aria-hidden="true">
+                {index === 0 ? (
+                  <div class="orb">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                  </div>
+                ) : index === 1 ? (
+                  <div class="windows">
+                    <div>
+                      <span class="concept-steps">
+                        DESIGN <MoveRight size={10} /> DEVELOP{" "}
+                        <MoveRight size={10} /> DELIVER
+                      </span>
+                      <i></i>
+                      <i></i>
+                      <i></i>
+                    </div>
+                    <div>
+                      <span>BUILD SOMETHING MEANINGFUL.</span>
+                    </div>
+                  </div>
+                ) : (
+                  <div class="workflow">
+                    <span>INPUT</span>
+                    <i></i>
+                    <b>
+                      <MoveRight size={40} stroke-width={1.25} />
+                    </b>
+                    <i></i>
+                    <span>OUTPUT</span>
+                  </div>
+                )}
+              </div>
+            )}
+            <span class="art-caption">
+              {project.template
+                ? "PLANTILLA · CONTENIDO POR COMPLETAR"
+                : project.category}
+            </span>
+          </a>
+          <div class="project-info">
+            <div>
+              <span class="eyebrow">{project.category}</span>
+              <h3>
+                <a href={`/proyectos/${project.slug}`}>{project.title}</a>
+              </h3>
+              <p>{project.summary}</p>
+            </div>
+            <a
+              class="circle-link"
+              href={`/proyectos/${project.slug}`}
+              aria-label={`Ver plantilla: ${project.title}`}
+            >
+              <ArrowUpRight size={21} stroke-width={1.5} aria-hidden="true" />
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section id="sobre-mi" class="about shell section">
+    <span class="eyebrow reveal">02 / LA PERSONA DETRÁS DEL CÓDIGO</span>
+    <div class="about-content reveal">
+      <h2>
+        Curiosidad para explorar.
+        <br />
+        <em>Criterio para construir.</em>
+      </h2>
+      <div>
+        <p>
+          Soy Sebastián Delgado, ingeniero de software por la UPC, en Lima,
+          Perú. En Laraigo he trabajado en aplicaciones empresariales, desde
+          interfaces con React y Next.js hasta servicios con NestJS, FastAPI y
+          ASP.NET Core.
+        </p>
+        <p>
+          Mi experiencia en inteligencia artificial incluye asistentes
+          conversacionales, arquitecturas RAG e integración de proveedores LLM.
+          Busco conectar ese conocimiento con productos útiles, trabajando con
+          equipos y clientes.
+        </p>
+        <a class="text-link" href="#contacto">
+          Conversemos sobre tu próximo paso{" "}
+          <ArrowUpRight size={16} aria-hidden="true" />
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="stack" class="shell section">
+    <div class="section-heading reveal">
+      <div>
+        <span class="eyebrow">03 / HERRAMIENTAS & CRITERIO</span>
+        <h2>
+          El stack cambia.
+          <br />
+          <em>La intención permanece.</em>
+        </h2>
+      </div>
+      <p>
+        La tecnología al servicio
+        <br />
+        de lo que queremos resolver.
+      </p>
+    </div>
+    <TechStack />
+  </section>
+
+  <section id="contacto" class="contact shell section">
+    <span class="eyebrow reveal">04 / EL SIGUIENTE PASO</span>
+    <p class="contact-intro reveal">
+      ¿Una idea, un proyecto o una oportunidad?
+    </p>
+    <h2 class="reveal">
+      Hagamos que
+      <br />
+      <em>algo pase.</em>
+      <span class="contact-star">
+        <Sparkles size={120} stroke-width={0.8} aria-hidden="true" />
+      </span>
+    </h2>
+    <ContactLinks />
+  </section>
+</Layout>
