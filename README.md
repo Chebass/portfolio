@@ -1,4 +1,4 @@
-# Sebastián Delgado — Portfolio
+# Sebastian Delgado — Portfolio
 
 Base local del portfolio de AI Engineering / Full Stack Developer. Astro, TypeScript, GSAP y CSS; negro como fondo, celeste `#D0EBF2` como acento, Inter e Instrument Serif alojadas localmente. Iconos de interfaz de Lucide y logos de Simple Icons renderizados como SVG durante el build, sin peticiones a un CDN de iconos.
 
@@ -24,7 +24,8 @@ Se excluyen dependencias, archivos generados, herramientas temporales y `package
 
 ## Contenido
 
-- `src/pages/index.astro`: presentación, sobre mí y contacto. Contenido basado en el CV facilitado por Sebastián.
+- `src/pages/index.astro`: presentación, sobre mí y contacto. Contenido basado en el CV facilitado por Sebastian.
+- `src/components/AboutSection.astro`: sección editorial sobre Sebastian, experiencia y servicios, antes de los proyectos. Usa las fotos originales de `src/assets/about/`, optimizadas por Astro; el título universitario se amplía en un diálogo accesible.
 - `src/components/TechStack.astro`: cuatro cajones independientes, inicialmente cerrados, con apertura animada y logos en sus colores de marca. Funcionan con ratón, teclado y pantallas táctiles; sin JavaScript mantienen la apertura nativa de `details`. Los conceptos sin marca (RAG, embeddings) se presentan como texto. Simple Icons es una colección comunitaria de marcas, no implica respaldo de sus propietarios.
 - `src/data/projects.ts`: fuente de datos de las tres plantillas de proyecto.
 - `src/pages/proyectos/[slug].astro`: páginas de detalle generadas desde los datos.

@@ -28,6 +28,26 @@ media.add("(prefers-reduced-motion: no-preference)", () => {
   });
 });
 media.add(
+  "(min-width: 901px) and (prefers-reduced-motion: no-preference)",
+  () => {
+    if (!document.querySelector(".about-portrait-image")) return;
+    gsap.fromTo(
+      ".about-portrait-image",
+      { yPercent: -3, scale: 1.07 },
+      {
+        yPercent: 3,
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".about-portrait",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1,
+        },
+      },
+    );
+  },
+);
+media.add(
   "(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)",
   () => {
     const cleanups: (() => void)[] = [];

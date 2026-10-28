@@ -15,7 +15,7 @@ export interface Project {
   template: boolean;
 }
 
-// Son plantillas editoriales, no proyectos ni experiencia atribuida a Sebastián.
+// Son plantillas editoriales, no proyectos ni experiencia atribuida a Sebastian.
 export const projects: Project[] = [
   {
     slug: "proyecto-ia",
