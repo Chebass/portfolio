@@ -26,7 +26,8 @@ Se excluyen dependencias, archivos generados, herramientas temporales y `package
 
 - `src/pages/index.astro`: presentación, sobre mí y contacto. Contenido basado en el CV facilitado por Sebastian.
 - `src/components/AboutSection.astro`: sección editorial sobre Sebastian, experiencia y servicios, antes de los proyectos. Usa las fotos originales de `src/assets/about/`, optimizadas por Astro; el título universitario se amplía en un diálogo accesible.
-- `src/components/TechStack.astro`: cuatro cajones independientes, inicialmente cerrados, con apertura animada y logos en sus colores de marca. Funcionan con ratón, teclado y pantallas táctiles; sin JavaScript mantienen la apertura nativa de `details`. Los conceptos sin marca (RAG, embeddings) se presentan como texto. Simple Icons es una colección comunitaria de marcas, no implica respaldo de sus propietarios.
+- `src/components/TechStack.astro`: seis cajones independientes, inicialmente cerrados, con apertura animada e icono y nombre para cada elemento. Funcionan con ratón, teclado y pantallas táctiles; sin JavaScript mantienen la apertura nativa de `details`.
+- `src/data/technologies.ts`: categorías y tecnologías. Los lenguajes se presentan en un cajón transversal; frontend incluye web y móvil, y datos y DevOps tienen cajones separados. Los conceptos sin marca (RAG, embeddings, SQL, patrones y CI/CD) usan iconos representativos de Lucide. Los logos proceden de Simple Icons y SVG locales, con fuentes documentadas en `public/icons/tech/SOURCES.md`.
 - `src/data/projects.ts`: fuente de datos de las tres plantillas de proyecto.
 - `src/pages/proyectos/[slug].astro`: páginas de detalle generadas desde los datos.
 - `src/styles/global.css`: sistema visual y adaptación a móvil.

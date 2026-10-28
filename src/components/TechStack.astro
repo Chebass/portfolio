@@ -1,103 +1,7 @@
 ---
-import {
-  BrainCircuit,
-  PanelsTopLeft,
-  Server,
-  Database,
-  Plus,
-} from "@lucide/astro";
-import {
-  siReact,
-  siNextdotjs,
-  siTypescript,
-  siRedux,
-  siNestjs,
-  siFastapi,
-  siDotnet,
-  siNodedotjs,
-  siPostgresql,
-  siPrisma,
-  siPython,
-  siOllama,
-  siDocker,
-  siGit,
-  siGithubactions,
-  siAnthropic,
-  siGooglegemini,
-} from "simple-icons";
-import type { SimpleIcon } from "simple-icons";
-interface Technology {
-  icon: SimpleIcon;
-  name: string;
-}
-interface Group {
-  name: string;
-  label: string;
-  symbol: typeof BrainCircuit;
-  description: string;
-  items: Technology[];
-  extra: string[];
-}
-const groups: Group[] = [
-  {
-    name: "AI Engineering",
-    label: "INTELIGENCIA APLICADA",
-    symbol: BrainCircuit,
-    description:
-      "Asistentes conversacionales, integración de LLM, RAG, embeddings y búsqueda vectorial.",
-    items: [
-      { icon: siPython, name: "Python" },
-      { icon: siFastapi, name: "FastAPI" },
-      { icon: siAnthropic, name: "Anthropic" },
-      { icon: siGooglegemini, name: "Gemini" },
-      { icon: siOllama, name: "Ollama" },
-    ],
-    extra: ["OpenAI APIs", "RAG", "Embeddings", "Vector Search"],
-  },
-  {
-    name: "Frontend",
-    label: "EXPERIENCIAS DIGITALES",
-    symbol: PanelsTopLeft,
-    description:
-      "Interfaces de aplicaciones empresariales, gestión de estado y consumo de APIs.",
-    items: [
-      { icon: siReact, name: "React" },
-      { icon: siNextdotjs, name: "Next.js" },
-      { icon: siTypescript, name: "TypeScript" },
-      { icon: siRedux, name: "Redux Toolkit" },
-    ],
-    extra: ["RTK Query", "HTML5", "CSS3"],
-  },
-  {
-    name: "Backend",
-    label: "LO QUE HACE QUE FUNCIONE",
-    symbol: Server,
-    description:
-      "Servicios, APIs REST y módulos de negocio de extremo a extremo.",
-    items: [
-      { icon: siNestjs, name: "NestJS" },
-      { icon: siFastapi, name: "FastAPI" },
-      { icon: siDotnet, name: "ASP.NET Core" },
-      { icon: siNodedotjs, name: "Node.js" },
-    ],
-    extra: ["REST APIs", "Microservicios", "Arquitectura modular"],
-  },
-  {
-    name: "Datos & DevOps",
-    label: "BASES SÓLIDAS",
-    symbol: Database,
-    description:
-      "Modelado de datos, consultas y automatización de builds, pruebas y despliegues.",
-    items: [
-      { icon: siPostgresql, name: "PostgreSQL" },
-      { icon: siPrisma, name: "Prisma" },
-      { icon: siDocker, name: "Docker" },
-      { icon: siGit, name: "Git" },
-      { icon: siGithubactions, name: "GitHub Actions" },
-    ],
-    extra: ["AWS", "Azure", "SQL Server", "MySQL", "CI/CD"],
-  },
-];
+import { Plus } from "@lucide/astro";
+import { technologyGroups as groups } from "../data/technologies";
+
 // Las marcas oscuras conservan su color sobre una placa clara.
 function needsLightPlate(hex: string) {
   const channels = hex
@@ -132,29 +36,49 @@ function needsLightPlate(hex: string) {
         <div class="drawer-tray">
           <p>{group.description}</p>
           <div class="tech-icons">
-            {group.items.map(({ icon, name }) => (
-              <div class="tech-item" style={`--brand-color:#${icon.hex}`}>
+            {group.items.map((technology) => (
+              <div
+                class="tech-item"
+                style={`--brand-color:${technology.kind === "brand" ? `#${technology.icon.hex}` : technology.kind === "concept" ? technology.color : "#D0EBF2"}`}
+              >
                 <span
                   class:list={[
                     "tech-logo",
-                    { "light-plate": needsLightPlate(icon.hex) },
+                    {
+                      "light-plate":
+                        technology.kind === "brand"
+                          ? needsLightPlate(technology.icon.hex)
+                          : technology.kind === "image" &&
+                            technology.lightPlate,
+                    },
                   ]}
                 >
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path d={icon.path} />
-                  </svg>
+                  {technology.kind === "brand" ? (
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path d={technology.icon.path} />
+                    </svg>
+                  ) : technology.kind === "image" ? (
+                    <img
+                      src={technology.src}
+                      alt=""
+                      width="29"
+                      height="29"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <technology.icon
+                      size={29}
+                      stroke-width={1.6}
+                      aria-hidden="true"
+                    />
+                  )}
                 </span>
-                <span>{name}</span>
+                <span>{technology.name}</span>
               </div>
-            ))}
-          </div>
-          <div class="tech-extra">
-            {group.extra.map((item) => (
-              <span>{item}</span>
             ))}
           </div>
         </div>
@@ -360,7 +284,7 @@ function needsLightPlate(hex: string) {
   }
   .tech-icons {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
     gap: 20px 12px;
   }
   .tech-item {
@@ -389,30 +313,16 @@ function needsLightPlate(hex: string) {
     background: #e7ecec;
     border-color: #fff2;
   }
-  .tech-logo svg {
+  .tech-logo :global(svg),
+  .tech-logo img {
     width: 29px;
     height: 29px;
     color: var(--brand-color);
+    object-fit: contain;
   }
   .tech-item:hover .tech-logo {
     transform: translateY(-4px);
     box-shadow: 0 10px 20px #0005;
-  }
-  .tech-extra {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 26px;
-    padding-top: 20px;
-    border-top: 1px solid #283134;
-  }
-  .tech-extra span {
-    font-size: 9px;
-    padding: 7px 10px;
-    border: 1px solid #2d393c;
-    border-radius: 6px;
-    color: var(--muted);
-    background: #151c1e;
   }
   @media (max-width: 760px) {
     .tech-cabinet {
@@ -433,7 +343,7 @@ function needsLightPlate(hex: string) {
       letter-spacing: 1.2px;
     }
     .tech-icons {
-      grid-template-columns: repeat(auto-fit, minmax(66px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(74px, 1fr));
     }
   }
   @media (prefers-reduced-motion: reduce) {
