@@ -255,6 +255,233 @@
     padding: 12px;
   }
 }
+/* ---------- Motion polish ---------- */
+
+/* Sticky navigation that gains a frosted backdrop once the page moves. */
+.navigation {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  isolation: isolate;
+}
+.navigation::before {
+  content: "";
+  position: absolute;
+  inset: 0 calc(var(--page-gutter) * -1);
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  border-bottom: 1px solid transparent;
+  background: #080808b8;
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  transition:
+    opacity 0.4s,
+    border-color 0.4s;
+}
+.navigation.is-scrolled::before {
+  opacity: 1;
+  border-bottom-color: var(--line);
+}
+.navigation nav a,
+.hero-foot a,
+.footer > a:last-child {
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  padding-bottom: 3px;
+  transition:
+    color 0.25s,
+    background-size 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.navigation nav a:hover,
+.navigation nav a.is-active,
+.hero-foot a:hover,
+.footer > a:last-child:hover {
+  background-size: 100% 1px;
+}
+.navigation nav a.is-active {
+  color: var(--accent);
+}
+.wordmark span {
+  transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.wordmark:hover span {
+  transform: rotate(90deg);
+}
+
+/* Top-of-page reading progress. */
+.page-progress {
+  position: fixed;
+  inset: 0 0 auto;
+  height: 2px;
+  z-index: 90;
+  pointer-events: none;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: linear-gradient(90deg, #6f9fab, var(--accent));
+  box-shadow: 0 0 14px #d0ebf250;
+}
+
+/* A soft halo that trails the pointer, without replacing the real cursor. */
+.cursor-follower {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+  border: 1px solid #d0ebf24d;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 200;
+  opacity: 0;
+  background: radial-gradient(circle, #d0ebf214, transparent 70%);
+  box-shadow: 0 0 22px #a3d9e40f;
+  transition:
+    width 0.3s cubic-bezier(0.2, 0.7, 0.2, 1),
+    height 0.3s cubic-bezier(0.2, 0.7, 0.2, 1),
+    margin 0.3s cubic-bezier(0.2, 0.7, 0.2, 1),
+    background 0.3s,
+    border-color 0.3s,
+    opacity 0.3s;
+  will-change: transform;
+}
+.cursor-follower::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.65;
+  transition:
+    opacity 0.3s,
+    transform 0.3s;
+}
+.cursor-follower.is-active {
+  opacity: 1;
+}
+.cursor-follower.is-hovering {
+  width: 60px;
+  height: 60px;
+  margin: -30px 0 0 -30px;
+  border-color: #d0ebf299;
+  background: radial-gradient(circle, #d0ebf21f, transparent 72%);
+}
+.cursor-follower.is-hovering::after {
+  opacity: 0;
+  transform: scale(0.4);
+}
+.cursor-follower.is-pressed {
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+}
+
+/* Magnetic controls: JS feeds --mag-x / --mag-y, CSS smooths the pull. */
+.button,
+.nav-contact,
+.circle-link,
+.network-icons a,
+.social-links a {
+  translate: var(--mag-x, 0px) var(--mag-y, 0px);
+  transition:
+    translate 0.25s cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 0.25s,
+    background 0.25s,
+    border-color 0.25s,
+    color 0.25s,
+    box-shadow 0.3s;
+}
+
+/* Hero pointer parallax, applied with `translate` so GSAP transforms stay free. */
+.hero h1 {
+  translate: calc(var(--parallax-x, 0px) * 0.55)
+    calc(var(--parallax-y, 0px) * 0.55);
+  transition: translate 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.hero-glow {
+  translate: var(--parallax-x, 0px) var(--parallax-y, 0px);
+  transition:
+    opacity 0.35s,
+    translate 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.hero-role,
+.hero-bottom,
+.hero-foot {
+  translate: calc(var(--parallax-x, 0px) * 0.2)
+    calc(var(--parallax-y, 0px) * 0.2);
+  transition: translate 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* Gentle 3D tilt for large visual surfaces. */
+[data-tilt] {
+  transform: perspective(1100px) rotateX(var(--tilt-x, 0deg))
+    rotateY(var(--tilt-y, 0deg));
+  transform-style: preserve-3d;
+  transition:
+    transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1),
+    border-color 0.4s,
+    box-shadow 0.4s;
+  will-change: transform;
+}
+/* Small continuous flourishes. */
+.contact-star svg {
+  animation: contact-spin 28s linear infinite;
+}
+.hero-foot a svg {
+  animation: cue-drift 2.4s ease-in-out infinite;
+}
+@keyframes contact-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+@keyframes cue-drift {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .cursor-follower {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cursor-follower,
+  .page-progress {
+    display: none;
+  }
+  .hero h1,
+  .hero-glow,
+  .hero-role,
+  .hero-bottom,
+  .hero-foot,
+  [data-tilt],
+  .button,
+  .nav-contact,
+  .circle-link,
+  .network-icons a,
+  .social-links a {
+    translate: none;
+    transform: none;
+    transition: none;
+  }
+  .contact-star svg,
+  .hero-foot a svg {
+    animation: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hero-glow,
   .project-art::after {
