@@ -78,11 +78,40 @@ const concept = (
 
 export const technologyGroups: TechnologyGroup[] = [
   {
+    name: "Lenguajes",
+    label: "UNA BASE COMPARTIDA",
+    symbol: CodeXml,
+    description:
+      "Lenguajes que utilizo en interfaces, servicios, inteligencia artificial, aplicaciones móviles y datos.",
+    items: [
+      brand("TypeScript", siTypescript),
+      brand("JavaScript", siJavascript),
+      brand("Python", siPython),
+      image("C#", "csharp"),
+      brand("Dart", siDart),
+      concept("SQL", Database, "#E8BD7B"),
+    ],
+  },
+  {
+    name: "Datos",
+    label: "INFORMACIÓN BIEN ESTRUCTURADA",
+    symbol: Database,
+    description:
+      "Bases de datos relacionales, modelado de información y acceso a datos con ORM.",
+    items: [
+      brand("PostgreSQL", siPostgresql),
+      brand("Prisma ORM", siPrisma),
+      image("SQL Server", "sql-server", true),
+      brand("MySQL", siMysql),
+      brand("Supabase", siSupabase),
+    ],
+  },
+  {
     name: "AI Engineering",
     label: "INTELIGENCIA APLICADA",
     symbol: BrainCircuit,
     description:
-      "Proveedores LLM, asistentes conversacionales y técnicas para trabajar con documentos y contexto.",
+      "Proveedores LLM, asistentes IA y técnicas para trabajar con documentos y contexto.",
     items: [
       image("OpenAI APIs", "openai", true),
       brand("Anthropic", siAnthropic),
@@ -125,35 +154,6 @@ export const technologyGroups: TechnologyGroup[] = [
       concept("REST APIs", Plug, "#94D7D0"),
       concept("Microservicios", Network, "#B7B2ED"),
       concept("Arquitectura modular", Boxes, "#E6BC88"),
-    ],
-  },
-  {
-    name: "Lenguajes",
-    label: "UNA BASE COMPARTIDA",
-    symbol: CodeXml,
-    description:
-      "Lenguajes que utilizo en interfaces, servicios, inteligencia artificial, aplicaciones móviles y datos.",
-    items: [
-      brand("TypeScript", siTypescript),
-      brand("JavaScript", siJavascript),
-      brand("Python", siPython),
-      image("C#", "csharp"),
-      brand("Dart", siDart),
-      concept("SQL", Database, "#E8BD7B"),
-    ],
-  },
-  {
-    name: "Datos",
-    label: "INFORMACIÓN BIEN ESTRUCTURADA",
-    symbol: Database,
-    description:
-      "Bases de datos relacionales, modelado de información y acceso a datos con ORM.",
-    items: [
-      brand("PostgreSQL", siPostgresql),
-      brand("Prisma ORM", siPrisma),
-      image("SQL Server", "sql-server", true),
-      brand("MySQL", siMysql),
-      brand("Supabase", siSupabase),
     ],
   },
   {

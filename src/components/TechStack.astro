@@ -1,50 +1,60 @@
 ---
-import { Plus } from "@lucide/astro";
 import { technologyGroups as groups } from "../data/technologies";
 import TechLogo from "./TechLogo.astro";
 ---
 
 <div class="tech-cabinet">
   {groups.map((group, index) => (
-    <details class="tech-drawer reveal" data-pointer-glow>
-      <summary class="drawer-face">
+    <article class="tech-drawer reveal" data-pointer-glow>
+      <header class="drawer-heading">
         <span class="drawer-topline">
           <span class="drawer-index">0{index + 1}</span>
           <span>{group.label}</span>
           <group.symbol size={20} stroke-width={1.5} aria-hidden="true" />
         </span>
-        <span class="drawer-title">{group.name}</span>
-        <span class="drawer-bottomline">
-          <span class="drawer-handle" aria-hidden="true"></span>
-          <span class="drawer-invitation">
-            <span class="when-closed">Explorar stack</span>
-            <span class="when-open">Cerrar cajón</span>
-            <Plus size={16} stroke-width={1.5} aria-hidden="true" />
+        <h3 class="drawer-title" id={`stack-title-${index}`}>
+          {group.name}
+        </h3>
+      </header>
+      <details class="drawer-mechanism">
+        <summary
+          class="drawer-face"
+          aria-label={`Tecnologías de ${group.name}`}
+          aria-controls={`stack-content-${index}`}
+        >
+          <span class="drawer-handle" aria-hidden="true">
+            <span class="drawer-grip"></span>
           </span>
-        </span>
-      </summary>
-      <div class="drawer-content">
-        <div class="drawer-tray">
-          <p>{group.description}</p>
-          <div class="tech-icons">
-            {group.items.map((technology) => (
-              <div class="tech-item">
-                <TechLogo technology={technology} />
-                <span>{technology.name}</span>
-              </div>
-            ))}
+        </summary>
+        <div
+          class="drawer-content"
+          id={`stack-content-${index}`}
+          aria-labelledby={`stack-title-${index}`}
+        >
+          <div class="drawer-tray">
+            <p>{group.description}</p>
+            <div class="tech-icons">
+              {group.items.map((technology) => (
+                <div class="tech-item">
+                  <TechLogo technology={technology} />
+                  <span>{technology.name}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-    </details>
+      </details>
+    </article>
   ))}
 </div>
 <script>
   import { gsap } from "gsap";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
+  gsap.registerPlugin(ScrollTrigger);
   document
-    .querySelectorAll<HTMLDetailsElement>(".tech-drawer")
+    .querySelectorAll<HTMLDetailsElement>(".drawer-mechanism")
     .forEach((drawer) => {
+      const card = drawer.closest<HTMLElement>(".tech-drawer")!;
       const summary = drawer.querySelector<HTMLElement>("summary")!;
       const content = drawer.querySelector<HTMLElement>(".drawer-content")!;
       let expanded = drawer.open;
@@ -58,7 +68,7 @@ import TechLogo from "./TechLogo.astro";
           ? content.getBoundingClientRect().height
           : 0;
         drawer.open = true;
-        drawer.classList.toggle("is-expanded", expanded);
+        card.classList.toggle("is-expanded", expanded);
         gsap.fromTo(
           content,
           { height: currentHeight, overflow: "hidden" },
@@ -81,30 +91,41 @@ import TechLogo from "./TechLogo.astro";
 </script>
 <style>
   .tech-cabinet {
+    overflow-anchor: none;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 22px;
     align-items: start;
   }
   .tech-drawer {
+    --drawer-front-height: 65px;
+    --drawer-radius: 18px;
     position: relative;
     isolation: isolate;
-    border: 1px solid #303839;
-    border-radius: 18px;
-    background: #0e1112;
+    border-radius: var(--drawer-radius);
+    background: var(--bg);
     box-shadow: 0 8px 24px #0005;
-    overflow: hidden;
     --spot-x: 50%;
     --spot-y: 0%;
     --spot-opacity: 0;
-    transition:
-      border-color 0.35s,
-      box-shadow 0.35s;
+    transition: box-shadow 0.35s;
+  }
+  .tech-drawer::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    box-sizing: border-box;
+    border: 1px solid #303839;
+    border-radius: inherit;
+    pointer-events: none;
+    transition: border-color 0.35s;
   }
   .tech-drawer::after {
     content: "";
     position: absolute;
     inset: 0;
+    border-radius: inherit;
     z-index: 2;
     pointer-events: none;
     opacity: var(--spot-opacity);
@@ -115,25 +136,41 @@ import TechLogo from "./TechLogo.astro";
     );
     transition: opacity 0.3s;
   }
-  .tech-drawer[open] {
-    border-color: #566c73;
+  .tech-drawer:has(.drawer-mechanism[open]) {
     box-shadow:
       0 18px 45px #0007,
       0 0 30px #d0ebf205;
   }
-  .drawer-face {
+  .tech-drawer:has(.drawer-mechanism[open])::before {
+    border-color: #566c73;
+  }
+  .drawer-heading {
     position: relative;
     display: block;
+    padding: 26px 30px 28px;
+    border-radius: var(--drawer-radius) var(--drawer-radius) 0 0;
+    background: linear-gradient(155deg, #202526 0%, #15191a 35%, #101314 100%);
+  }
+  .drawer-mechanism {
+    position: relative;
+    padding-bottom: var(--drawer-front-height);
+  }
+  .drawer-face {
+    position: absolute;
+    inset: auto 0 0;
+    z-index: 1;
+    height: var(--drawer-front-height);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     list-style: none;
-    padding: 26px 30px 25px;
+    border-top: 1px solid #3c4b51;
+    border-radius: 0 0 var(--drawer-radius) var(--drawer-radius);
     background: linear-gradient(155deg, #202526 0%, #15191a 35%, #101314 100%);
-    border-radius: 17px 0px 0px;
-    box-shadow:
-      inset 0 1px #ffffff0c,
-      inset 0 -3px 0 #080a0b,
-      inset 0 -4px 0 #ffffff06;
-    transition: background 0.35s;
+    transition:
+      border-color 0.35s,
+      box-shadow 0.35s;
   }
   .drawer-face::-webkit-details-marker {
     display: none;
@@ -168,72 +205,117 @@ import TechLogo from "./TechLogo.astro";
     display: block;
     font-size: 30px;
     letter-spacing: -1px;
-    margin: 28px 0 30px;
+    margin: 28px 0 0;
     font-weight: 450;
   }
-  .drawer-bottomline {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-  }
   .drawer-handle {
+    position: relative;
     display: block;
-    width: 78px;
-    height: 12px;
-    border: 1px solid #4e5e63;
-    border-bottom-color: #233034;
+    width: 112px;
+    height: 32px;
+    flex-shrink: 0;
+    background: radial-gradient(ellipse at 50% 80%, #0008, transparent 70%);
+  }
+  .drawer-handle::before,
+  .drawer-handle::after {
+    content: "";
+    position: absolute;
+    top: 5px;
+    width: 13px;
+    height: 24px;
+    border: 1px solid #617e89;
     border-radius: 5px;
-    background: linear-gradient(#334146, #171f22 50%, #0a0e10 51%);
+    background:
+      radial-gradient(
+        circle at 50% 78%,
+        #b2cbd575 1px,
+        #0e1c22 1.5px,
+        transparent 2px
+      ),
+      linear-gradient(110deg, #425b65, #21333c 55%, #14242b);
     box-shadow:
-      0 4px 5px #0008,
-      inset 0 1px #ffffff17;
+      inset 0 1px #d0ebf230,
+      0 3px 5px #0009;
+  }
+  .drawer-handle::before {
+    left: 5px;
+  }
+  .drawer-handle::after {
+    right: 5px;
+  }
+  .drawer-grip {
+    position: absolute;
+    z-index: 1;
+    top: 4px;
+    left: 5px;
+    right: 5px;
+    height: 15px;
+    border: 1px solid #8ba9b4;
+    border-bottom-color: #304953;
+    border-radius: 8px;
+    background: linear-gradient(
+      180deg,
+      #aec7d0,
+      #63818d 22%,
+      #3c5661 48%,
+      #1c3039 78%,
+      #314a55
+    );
+    box-shadow:
+      0 7px 6px #000a,
+      inset 0 1px #edfbff50;
+    transform-origin: center;
     transition:
-      transform 0.4s,
+      transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1),
+      border-color 0.35s,
       box-shadow 0.4s;
   }
-  .drawer-face:hover .drawer-handle,
-  .is-expanded .drawer-handle {
+  .drawer-grip::before {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 12px;
+    right: 12px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #e2f6ff80, transparent);
+  }
+  .drawer-face:focus-visible .drawer-grip {
     transform: translateY(-2px);
+    border-color: var(--accent);
+  }
+  .tech-drawer:has(.drawer-mechanism[open]) .drawer-grip {
+    transform: translateY(-6px) scaleX(1.025);
+    border-color: #c5e4ef;
     box-shadow:
-      0 6px 9px #000b,
-      inset 0 1px #ffffff24;
+      0 13px 10px #000b,
+      0 0 12px #b9e6f115,
+      inset 0 1px #effbff70;
   }
-  .drawer-invitation {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 10px;
-    color: var(--muted);
-  }
-  .drawer-invitation :global(svg) {
-    transition: transform 0.4s;
-    color: var(--accent);
-  }
-  .is-expanded .drawer-invitation :global(svg) {
-    transform: rotate(45deg);
-  }
-  .when-open {
-    display: none;
-  }
-  .is-expanded .when-open {
-    display: inline;
-  }
-  .is-expanded .when-closed {
-    display: none;
+  @media (hover: hover) {
+    .drawer-face:hover .drawer-grip {
+      transform: translateY(-2px);
+      border-color: #c5e4ef;
+    }
+    .tech-drawer:has(.drawer-mechanism[open]) .drawer-face:hover .drawer-grip {
+      transform: translateY(-7px) scaleX(1.025);
+    }
+    .drawer-face:active .drawer-grip {
+      transform: translateY(1px);
+    }
   }
   .drawer-tray {
+    position: relative;
     padding: 25px 30px 30px;
     border-top: 1px solid #050708;
-    background: linear-gradient(#070a0bdd, #101516 24px);
-    box-shadow: inset 0 12px 20px #0005;
+    background: transparent;
   }
   .drawer-tray > p {
     font-size: 12px;
     color: var(--muted);
     line-height: 1.8;
     margin: 0 0 24px;
-    max-width: 420px;
+    max-width: none;
+    width: 100%;
   }
   .tech-icons {
     display: grid;
@@ -258,12 +340,12 @@ import TechLogo from "./TechLogo.astro";
       grid-template-columns: 1fr;
       gap: 16px;
     }
-    .drawer-face {
+    .drawer-heading {
       padding: 23px;
     }
     .drawer-title {
       font-size: 27px;
-      margin: 24px 0;
+      margin: 24px 0 0;
     }
     .drawer-tray {
       padding: 24px 23px;
@@ -276,11 +358,18 @@ import TechLogo from "./TechLogo.astro";
     }
   }
   @media (prefers-reduced-motion: reduce) {
+    .drawer-grip,
+    .drawer-face:is(:hover, :active, :focus-visible) .drawer-grip,
+    .tech-drawer:has(.drawer-mechanism[open]) .drawer-grip,
+    .tech-drawer:has(.drawer-mechanism[open]) .drawer-face:hover .drawer-grip {
+      transform: none;
+    }
     .tech-item:hover :global(.tech-logo) {
       transform: none;
     }
     *,
-    *::after {
+    *::after,
+    *::before {
       transition: none !important;
     }
   }
