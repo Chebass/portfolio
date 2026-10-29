@@ -5,6 +5,14 @@ export interface Project {
   summary: string;
   technologies: string[];
   cover?: string;
+  coverWidth?: number;
+  coverHeight?: number;
+  status?: string;
+  demoLabel?: string;
+  stackLabel?: string;
+  solutionTitle?: string;
+  resultTitle?: string;
+  galleryDescription?: string;
   screenshots: {
     src: string;
     alt: string;
@@ -173,6 +181,212 @@ export const websiteProjects: Project[] = [
   },
 ];
 
+export const webAppProjects: Project[] = [
+  {
+    slug: "mindy",
+    title: "Mindy",
+    category: "GESTIÓN PARA CENTROS PSICOLÓGICOS",
+    context: "Proyecto personal · Demo con información ficticia",
+    role: "Diseño de producto y desarrollo Full Stack",
+    status: "Demo funcional · En evolución",
+    summary:
+      "Un espacio de trabajo para que los centros psicológicos organicen pacientes, citas y evaluaciones. Pensado desde la práctica diaria y con la posibilidad de evolucionar hacia otros centros médicos.",
+    technologies: [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "NestJS",
+      "PostgreSQL",
+      "Prisma ORM",
+      "Docker",
+    ],
+    cover: "/projects/aplicaciones-web/mindy/cover.webp",
+    coverWidth: 1600,
+    coverHeight: 718,
+    template: false,
+    problem:
+      "La información de pacientes, la agenda y las pruebas pueden terminar repartidas entre distintas herramientas. Mindy nace para reunir ese trabajo en un mismo centro, con espacios y responsabilidades para psicólogos y managers.",
+    contribution:
+      "Concebí la propuesta y desarrollé la interfaz y la API: acceso por centro y roles, gestión de pacientes, calendario, biblioteca de pruebas, historial de evaluaciones, perfil y preferencias. Construí los flujos para conectar cada evaluación con su paciente y mantener separadas las agendas de los profesionales.",
+    solutionTitle: "El trabajo diario, conectado.",
+    solution:
+      "Una aplicación con Next.js y NestJS, PostgreSQL y Prisma. Desde el dashboard se accede a pacientes y próximas citas; el calendario permite registrar citas y recordatorios, y las pruebas se aplican a un paciente seleccionado conservando su resultado y la versión utilizada. Los permisos distinguen la gestión administrativa del acceso a resultados clínicos.",
+    resultTitle: "Una base funcional para seguir creciendo.",
+    result:
+      "La demo integra los principales flujos con información ficticia y avisos dentro de la aplicación. Los avisos del dispositivo requieren mantener Mindy abierto y dependen del navegador. Quedan por implementar los recordatorios por correo para profesionales y pacientes y ampliar la configuración del centro. La adaptación a centros médicos es una dirección futura, no una funcionalidad ya disponible.",
+    galleryDescription:
+      "Recorrido de la demo con información ficticia. Selecciona una captura para ampliarla.",
+    features: [
+      {
+        title: "Pacientes y responsables",
+        description:
+          "Registro, búsqueda y actualización de pacientes, con asignación al psicólogo y alcance según el rol y el centro activo.",
+      },
+      {
+        title: "Agenda y recordatorios",
+        description:
+          "Calendario semanal, citas vinculadas a pacientes y recordatorios personales. Avisos dentro de la app y protección frente a citas superpuestas.",
+      },
+      {
+        title: "Pruebas con historial",
+        description:
+          "Biblioteca por centro, favoritos y nuevas fichas. Cada aplicación conserva el paciente, profesional, versión y resultado para su consulta posterior.",
+      },
+      {
+        title: "Perfil y preferencias",
+        description:
+          "Edición de datos personales y contraseña, temas claro y oscuro y tiempo de inactividad. Roles de psicólogo y manager por membresía.",
+      },
+    ],
+    screenshots: [
+      {
+        src: "/projects/aplicaciones-web/mindy/patients.webp",
+        width: 1600,
+        height: 724,
+        alt: "Listado de pacientes de demostración en Mindy, con responsables y pruebas aplicadas.",
+        caption:
+          "Pacientes, búsqueda y acceso a su información desde un mismo listado.",
+      },
+      {
+        src: "/projects/aplicaciones-web/mindy/patient-history.webp",
+        width: 1600,
+        height: 722,
+        alt: "Panel de pruebas aplicadas a un paciente ficticio en Mindy.",
+        caption:
+          "Las evaluaciones quedan vinculadas al paciente y al profesional que las realizó.",
+      },
+      {
+        src: "/projects/aplicaciones-web/mindy/tests.webp",
+        width: 1600,
+        height: 726,
+        alt: "Biblioteca de pruebas psicológicas de Mindy con favoritos e historial.",
+        caption:
+          "Biblioteca del centro, favoritos y evaluaciones recientes para continuar cada proceso.",
+      },
+      {
+        src: "/projects/aplicaciones-web/mindy/calendar.webp",
+        width: 1600,
+        height: 757,
+        alt: "Agenda semanal de Mindy con una cita de demostración y sus detalles.",
+        caption:
+          "Calendario semanal con citas, recordatorios y horarios en la zona del centro.",
+      },
+      {
+        src: "/projects/aplicaciones-web/mindy/settings.webp",
+        width: 1600,
+        height: 755,
+        alt: "Preferencias de apariencia y tiempo de sesión en Mindy.",
+        caption:
+          "Preferencias personales de apariencia y cierre de sesión por inactividad.",
+      },
+      {
+        src: "/projects/aplicaciones-web/mindy/profile.webp",
+        width: 1600,
+        height: 758,
+        alt: "Perfil del profesional en Mindy con información personal y resumen de actividad.",
+        caption:
+          "El perfil reúne datos de la cuenta, membresía y actividad del profesional.",
+      },
+    ],
+  },
+  {
+    slug: "laraigo",
+    title: "Laraigo",
+    category: "EXPERIENCIA PROFESIONAL · IA & PRODUCTO",
+    context: "Producto de Laraigo · Uno de mis empleadores",
+    role: "Desarrollo de módulos · Full Stack e integraciones IA",
+    status: "Producto empresarial · Aporte como parte del equipo",
+    demo: "https://www.laraigo.com/",
+    demoLabel: "Conocer Laraigo",
+    stackLabel: "TECNOLOGÍAS EN MI PARTICIPACIÓN",
+    summary:
+      "Uno de los productos en los que más he trabajado como desarrollador: una plataforma empresarial de automatización y comunicación omnicanal. Mi participación destaca en agentes IA, RAG y orquestación de distintos proveedores. La aplicación pertenece a Laraigo.",
+    technologies: [
+      "Next.js",
+      "NestJS",
+      "FastAPI",
+      "PostgreSQL",
+      "OpenAI APIs",
+      "Anthropic",
+      "RAG",
+      "Embeddings",
+      "Vector Search",
+    ],
+    cover: "/projects/aplicaciones-web/laraigo/cover.webp",
+    coverWidth: 1600,
+    coverHeight: 758,
+    template: false,
+    problem:
+      "Llevar la IA al trabajo de una empresa requiere conectar modelos, conocimiento y herramientas con las conversaciones y procesos de sus usuarios. Mi trabajo en Laraigo se enfoca en desarrollar partes de esa experiencia dentro de un producto compartido con el equipo.",
+    contribution:
+      "He participado en el desarrollo de módulos de agentes y asistentes IA, con especial foco en el proyecto de RAG y la orquestación de varios proveedores. También he trabajado en las experiencias de configuración, conversación y plantillas de comunicación que se muestran en estas capturas.",
+    solutionTitle: "Agentes con conocimiento y contexto.",
+    solution:
+      "El trabajo combina recuperación de información para aportar contexto a los modelos con la configuración de agentes, bases de conocimiento y herramientas. Las pantallas permiten definir modelos e instrucciones y organizar asistentes, incluidos escenarios multiagente con un orquestador y agentes especializados.",
+    resultTitle: "Experiencia construyendo en equipo.",
+    result:
+      "Esta experiencia reúne desarrollo de producto empresarial e integración de IA en flujos de uso reales. Presento una selección de los módulos en los que he trabajado, no la autoría de toda la plataforma. Laraigo es el propietario del producto; el enlace lleva a su web pública de presentación y no a una demo desarrollada por mí de forma independiente.",
+    galleryDescription:
+      "Selección de módulos de Laraigo en los que he trabajado. Selecciona una captura para ampliarla.",
+    features: [
+      {
+        title: "Agentes y proveedores IA",
+        description:
+          "Configuración de modelos, instrucciones, parámetros de respuesta y modelos de respaldo de distintos proveedores.",
+      },
+      {
+        title: "RAG y bases de conocimiento",
+        description:
+          "Mi foco principal: conectar la recuperación de información con las respuestas de los agentes para trabajar con conocimiento contextual.",
+      },
+      {
+        title: "Asistentes y orquestación",
+        description:
+          "Experiencias para configurar copilots y escenarios multiagente, con permisos, agentes especializados y un orquestador.",
+      },
+      {
+        title: "Conversación y comunicación",
+        description:
+          "Interfaz de chat con historial y presentación de respuestas, junto con configuración y vista previa de plantillas de comunicación.",
+      },
+    ],
+    screenshots: [
+      {
+        src: "/projects/aplicaciones-web/laraigo/agents.webp",
+        width: 1600,
+        height: 763,
+        alt: "Configuración de un agente IA en Laraigo, con modelo, instrucciones y parámetros.",
+        caption:
+          "Configuración de agentes: proveedor, modelo, instrucciones y opciones de respuesta.",
+      },
+      {
+        src: "/projects/aplicaciones-web/laraigo/chat.webp",
+        width: 1600,
+        height: 724,
+        alt: "Interfaz de conversación con un agente IA en Laraigo.",
+        caption:
+          "La experiencia conversacional reúne historial y respuestas del agente.",
+      },
+      {
+        src: "/projects/aplicaciones-web/laraigo/cover.webp",
+        width: 1600,
+        height: 758,
+        alt: "Configuración de asistentes Copilot y un escenario multiagente en Laraigo.",
+        caption:
+          "Asistentes Copilot: acceso de usuarios, bases de conocimiento y configuración multiagente.",
+      },
+      {
+        src: "/projects/aplicaciones-web/laraigo/templates.webp",
+        width: 1600,
+        height: 756,
+        alt: "Editor de plantillas de comunicación HSM de Laraigo con vista previa.",
+        caption:
+          "Plantillas de comunicación con categorías, formatos y vista previa del mensaje.",
+      },
+    ],
+  },
+];
+
 export const projects: ProjectCategory[] = [
   {
     slug: "sitios-web",
@@ -200,8 +414,8 @@ export const projects: ProjectCategory[] = [
     category: "APLICACIONES WEB",
     summary:
       "Experiencia en aplicaciones empresariales y un proyecto personal de gestión para centros psicológicos.",
-    template: true,
-    projects: [],
-    planned: ["Laraigo", "Aplicación para centros psicológicos"],
+    template: false,
+    projects: webAppProjects,
+    planned: [],
   },
 ];

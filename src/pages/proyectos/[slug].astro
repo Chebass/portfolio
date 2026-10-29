@@ -106,8 +106,10 @@ const { category } = Astro.props;
         <X size={22} aria-hidden="true" />
       </button>
     </div>
-    <img alt="" />
-    <p class="capture-dialog-caption"></p>
+    <div class="capture-dialog-content">
+      <img alt="" />
+      <p class="capture-dialog-caption"></p>
+    </div>
   </dialog>
 </Layout>
 
@@ -382,22 +384,36 @@ const { category } = Astro.props;
     margin: 0;
   }
   .capture-dialog {
+    --dialog-radius: 16px;
     width: min(1150px, calc(100% - 32px));
     max-height: calc(100dvh - 40px);
     padding: 0;
     border: 1px solid #526e78;
-    border-radius: 16px;
+    border-radius: var(--dialog-radius);
+    overflow: visible;
     background: #0e181d;
     color: var(--text);
     box-shadow: 0 30px 100px #0009;
+  }
+  .capture-dialog[open] {
+    display: flex;
+    flex-direction: column;
+  }
+  .capture-dialog-content {
+    min-height: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+    margin: 0 5px 5px;
+    border-radius: 0 0 calc(var(--dialog-radius) - 6px)
+      calc(var(--dialog-radius) - 6px);
   }
   .capture-dialog::backdrop {
     background: #03080cdd;
     backdrop-filter: blur(10px);
   }
   .capture-dialog-header {
-    position: sticky;
-    top: 0;
+    position: relative;
+    flex-shrink: 0;
     z-index: 1;
     display: flex;
     align-items: center;
@@ -405,6 +421,8 @@ const { category } = Astro.props;
     gap: 20px;
     padding: 18px 22px;
     background: #101b20;
+    border-radius: calc(var(--dialog-radius) - 1px)
+      calc(var(--dialog-radius) - 1px) 0 0;
     border-bottom: 1px solid #344c57;
   }
   .capture-dialog-header h2 {
@@ -426,7 +444,7 @@ const { category } = Astro.props;
       background 0.25s,
       rotate 0.25s;
   }
-  .capture-dialog > img {
+  .capture-dialog-content > img {
     display: block;
     width: auto;
     max-width: calc(100% - 32px);

@@ -28,7 +28,7 @@ const host = project.demo ? new URL(project.demo).hostname : "";
           target="_blank"
           rel="noopener noreferrer"
         >
-          <span>Visitar demo</span>
+          <span>{project.demoLabel ?? "Visitar demo"}</span>
           <span class="button-icon">
             <ArrowUpRight size={18} aria-hidden="true" />
           </span>
@@ -58,7 +58,8 @@ const host = project.demo ? new URL(project.demo).hostname : "";
     <div>
       <dt>ESTADO</dt>
       <dd>
-        <Check size={13} aria-hidden="true" /> Demo publicada
+        <Check size={13} aria-hidden="true" />{" "}
+        {project.status ?? "Demo publicada"}
       </dd>
     </div>
   </dl>
@@ -70,27 +71,40 @@ const host = project.demo ? new URL(project.demo).hostname : "";
           <i></i>
           <i></i>
         </span>
-        <span>{host}</span>
-        <ArrowUpRight size={14} aria-hidden="true" />
+        <span>{project.status ? `Captura · ${project.title}` : host}</span>
+        <Scan size={14} aria-hidden="true" />
       </div>
       <a
-        href={project.demo}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={`Visitar la demo de ${project.title}`}
+        href={project.status ? project.cover : project.demo}
+        target={project.status ? undefined : "_blank"}
+        rel={project.status ? undefined : "noopener noreferrer"}
+        data-capture-open={project.status ? true : undefined}
+        data-caption={
+          project.status
+            ? `Vista general de ${project.title}. ${project.context}`
+            : undefined
+        }
+        data-alt={
+          project.status ? `Vista general de ${project.title}` : undefined
+        }
+        aria-label={
+          project.status
+            ? `Ampliar vista de ${project.title}`
+            : `Visitar la demo de ${project.title}`
+        }
       >
         <img
           src={project.cover}
           alt={`Vista de inicio de ${project.title}`}
-          width="1440"
-          height="960"
+          width={project.coverWidth ?? 1440}
+          height={project.coverHeight ?? 960}
         />
       </a>
     </figure>
   )}
   <div class="case-details-layout">
     <aside class="case-stack">
-      <span class="eyebrow">CONSTRUIDO CON</span>
+      <span class="eyebrow">{project.stackLabel ?? "CONSTRUIDO CON"}</span>
       <ul>
         {project.technologies.map((technology) => (
           <li>
@@ -106,10 +120,14 @@ const host = project.demo ? new URL(project.demo).hostname : "";
         ["02 / MI CONTRIBUCIÓN", "Lo que construí.", project.contribution],
         [
           "03 / LA SOLUCIÓN",
-          "Del contenido a la experiencia.",
+          project.solutionTitle ?? "Del contenido a la experiencia.",
           project.solution,
         ],
-        ["04 / EL RESULTADO", "Una demo para explorar.", project.result],
+        [
+          "04 / EL RESULTADO",
+          project.resultTitle ?? "Una demo para explorar.",
+          project.result,
+        ],
       ].map(([label, title, body]) => (
         <section class="case-story-card" data-pointer-glow>
           <span class="case-section-label">{label}</span>
@@ -145,7 +163,10 @@ const host = project.demo ? new URL(project.demo).hostname : "";
         <h3 id={`captures-${project.slug}`}>
           Una mirada <em>más cerca.</em>
         </h3>
-        <p>Capturas de la demo. Selecciona una para ampliarla.</p>
+        <p>
+          {project.galleryDescription ??
+            "Capturas de la demo. Selecciona una para ampliarla."}
+        </p>
       </div>
       <div class="case-capture-grid">
         {project.screenshots.map((image, index) => (
@@ -291,7 +312,7 @@ const host = project.demo ? new URL(project.demo).hostname : "";
   }
   .case-details-layout {
     display: grid;
-    grid-template-columns: 0.5fr 1.5fr;
+    grid-template-columns: minmax(340px, 0.6fr) minmax(0, 1.4fr);
     gap: 70px;
     margin: 75px 0;
   }
@@ -301,9 +322,9 @@ const host = project.demo ? new URL(project.demo).hostname : "";
     top: 35px;
   }
   .case-stack ul {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 8px;
     list-style: none;
     padding: 0;
     margin-top: 25px;
@@ -314,11 +335,11 @@ const host = project.demo ? new URL(project.demo).hostname : "";
     position: relative;
     display: flex;
     align-items: center;
-    gap: 13px;
+    gap: 8px;
     min-width: 0;
-    width: fit-content;
+    width: 100%;
     max-width: 100%;
-    padding: 9px 12px;
+    padding: 9px 8px;
     border: 1px solid transparent;
     border-radius: 12px;
     transition:
@@ -328,6 +349,7 @@ const host = project.demo ? new URL(project.demo).hostname : "";
   }
   .case-stack li > span:last-child {
     position: relative;
+    overflow-wrap: anywhere;
     transition: color 0.3s;
   }
   .case-stack li > span:last-child::after {
@@ -632,7 +654,10 @@ const host = project.demo ? new URL(project.demo).hostname : "";
   @media (max-width: 1000px) {
     .case-details-layout {
       gap: 35px;
-      grid-template-columns: 0.5fr 1.5fr;
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .case-stack {
+      position: static;
     }
     .case-story {
       gap: 28px;
@@ -697,8 +722,6 @@ const host = project.demo ? new URL(project.demo).hostname : "";
       position: static;
     }
     .case-stack ul {
-      flex-direction: row;
-      flex-wrap: wrap;
       gap: 10px;
       margin-top: 18px;
     }
@@ -706,7 +729,7 @@ const host = project.demo ? new URL(project.demo).hostname : "";
       font-size: 10px;
       border: 1px solid #354850;
       border-radius: 6px;
-      padding: 8px 11px;
+      padding: 8px;
     }
     .case-story {
       grid-template-columns: 1fr;

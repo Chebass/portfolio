@@ -76,7 +76,7 @@ import { projects } from "../data/projects";
         <span class="art-caption">
           {category.template
             ? "CASOS POR INCORPORAR · VISTA CONCEPTUAL"
-            : "SDI INGENIEROS / BAJO LA RED"}
+            : category.projects.map((project) => project.title).join(" / ")}
         </span>
       </a>
       <div class="project-info">
@@ -85,7 +85,7 @@ import { projects } from "../data/projects";
             {category.category} /{" "}
             {category.template
               ? "EN PREPARACIÓN"
-              : `${category.projects.length} DEMOS`}
+              : `${category.projects.length} CASOS`}
           </span>
           <h3>
             <a href={`/proyectos/${category.slug}`}>{category.title}</a>

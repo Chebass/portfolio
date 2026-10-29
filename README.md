@@ -59,7 +59,13 @@ Para trabajo privado o sin despliegue, documentar el caso con imágenes y una ex
 
 ## Estado y siguientes pasos
 
-Primera versión: inicio, tres categorías de proyectos con dos casos web publicados, stack en cajones desplegables y contacto por correo, LinkedIn, GitHub, WhatsApp e Instagram. Pendientes: demos móviles, detalle de Laraigo y la aplicación para centros psicológicos; aprendizajes, resultados y enlaces opcionales de cada caso; posible publicación IEEE y descarga del CV.
+Primera versión: inicio, tres categorías de proyectos con dos sitios web y dos casos de aplicaciones web, stack en cajones desplegables y contacto por correo, LinkedIn, GitHub, WhatsApp e Instagram. Pendientes: demos móviles; aprendizajes, resultados y enlaces opcionales de cada caso; posible publicación IEEE y descarga del CV.
+
+Los casos `/proyectos/aplicaciones-web#mindy` y `/proyectos/aplicaciones-web#laraigo` comparten las pestañas, animaciones y galería ampliable de los sitios web. Las once capturas originales facilitadas por Sebastian se optimizaron a WebP (máximo 1600 px) y están en `public/projects/aplicaciones-web/`.
+
+Mindy se documenta como proyecto personal y demo con datos ficticios, a partir del README del proyecto y las capturas entregadas. Los avisos dentro de la app están implementados; los correos, la ampliación de la configuración del centro y su adaptación a otras especialidades se presentan como pendientes o proyección futura. No se publica una URL de demo ni de código sin disponer de ella.
+
+Laraigo se atribuye expresamente a la empresa y la participación se limita a los módulos descritos por Sebastian. El botón lleva a su web comercial, no a una demo personal. El resumen público se contrastó con [Laraigo](https://www.laraigo.com/) y su [guía de agentes IA](https://academy.laraigo.com/2025/09/29/entrenamiento-de-agente-genai-en-laraigo/). La lista de IA representa el alcance de la participación, no el stack completo del producto. Los modelos concretos visibles en las capturas no se presentan como catálogo vigente de proveedores.
 
 ## Despliegue en Vercel
 

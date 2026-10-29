@@ -670,18 +670,23 @@ const services = [
     max-height: calc(100dvh - 40px);
     border: 1px solid #516b74;
     border-radius: 18px;
+    overflow: visible;
     padding: 0;
     background: #101719;
     color: var(--text);
     box-shadow: 0 30px 100px #0009;
+  }
+  .degree-dialog[open] {
+    display: flex;
+    flex-direction: column;
   }
   .degree-dialog::backdrop {
     background: #030708d9;
     backdrop-filter: blur(12px);
   }
   .degree-dialog-header {
-    position: sticky;
-    top: 0;
+    position: relative;
+    flex-shrink: 0;
     z-index: 1;
     display: flex;
     align-items: center;
@@ -689,6 +694,7 @@ const services = [
     gap: 20px;
     padding: 20px 24px;
     background: #101719;
+    border-radius: 17px 17px 0 0;
     border-bottom: 1px solid #34474e;
   }
   .degree-dialog-header h2 {
@@ -709,9 +715,11 @@ const services = [
     flex-shrink: 0;
   }
   .degree-document {
+    min-height: 0;
     margin: 20px;
     border-radius: 5px;
-    overflow: hidden;
+    overflow: auto;
+    overscroll-behavior: contain;
     background: white;
   }
   .degree-document :global(img) {
