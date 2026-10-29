@@ -1,0 +1,306 @@
+---
+import { ArrowUpRight, Smartphone, PanelsTopLeft } from "@lucide/astro";
+import { projects } from "../data/projects";
+---
+
+<div class="project-list">
+  {projects.map((category, index) => (
+    <article class="project-card reveal">
+      <a
+        class:list={["project-art", "category-art", `category-art-${index}`]}
+        data-pointer-glow
+        href={`/proyectos/${category.slug}`}
+        aria-label={`Explorar ${category.category.toLowerCase()}`}
+      >
+        <div class="art-header">
+          <span>
+            {String(index + 1).padStart(2, "0")} / {category.category}
+          </span>
+          <span class="art-open">
+            <ArrowUpRight size={20} stroke-width={1.5} aria-hidden="true" />
+          </span>
+        </div>
+        {category.projects.length ? (
+          <div class="website-previews" aria-hidden="true">
+            {category.projects.map((project) => (
+              <div class="website-window">
+                <div class="window-bar">
+                  <i></i>
+                  <i></i>
+                  <i></i>
+                  <span>{project.title}</span>
+                </div>
+                <img
+                  src={project.cover}
+                  alt=""
+                  width="1440"
+                  height="960"
+                  loading="lazy"
+                />
+              </div>
+            ))}
+          </div>
+        ) : index === 1 ? (
+          <div class="mobile-concept" aria-hidden="true">
+            <div class="concept-phone">
+              <span></span>
+              <Smartphone size={36} stroke-width={1} />
+              <i></i>
+              <i></i>
+            </div>
+            <div class="concept-phone">
+              <span></span>
+              <Smartphone size={36} stroke-width={1} />
+              <i></i>
+              <i></i>
+            </div>
+          </div>
+        ) : (
+          <div class="platform-concept" aria-hidden="true">
+            <div class="concept-sidebar">
+              <i></i>
+              <i></i>
+              <i></i>
+            </div>
+            <div class="concept-workspace">
+              <PanelsTopLeft size={35} stroke-width={1} />
+              <span></span>
+              <div>
+                <i></i>
+                <i></i>
+                <i></i>
+              </div>
+            </div>
+          </div>
+        )}
+        <span class="art-caption">
+          {category.template
+            ? "CASOS POR INCORPORAR · VISTA CONCEPTUAL"
+            : "SDI INGENIEROS / BAJO LA RED"}
+        </span>
+      </a>
+      <div class="project-info">
+        <div>
+          <span class="eyebrow">
+            {category.category} /{" "}
+            {category.template
+              ? "EN PREPARACIÓN"
+              : `${category.projects.length} DEMOS`}
+          </span>
+          <h3>
+            <a href={`/proyectos/${category.slug}`}>{category.title}</a>
+          </h3>
+          <p>{category.summary}</p>
+          <span class="category-project-names">
+            {category.projects.map((project) => project.title).join(" + ")}
+          </span>
+        </div>
+        <a
+          class="circle-link"
+          href={`/proyectos/${category.slug}`}
+          aria-label={`Ver ${category.category.toLowerCase()}`}
+        >
+          <ArrowUpRight size={21} stroke-width={1.5} aria-hidden="true" />
+        </a>
+      </div>
+    </article>
+  ))}
+</div>
+
+<style>
+  .category-art {
+    background: radial-gradient(ellipse at 30% 40%, #263b43, #0b1013 75%);
+  }
+  .website-previews {
+    position: absolute;
+    inset: 0;
+    perspective: 1000px;
+  }
+  .website-window {
+    position: absolute;
+    width: 74%;
+    left: 4%;
+    top: 17%;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #8faeb650;
+    background: #e7f0f7;
+    box-shadow: 0 20px 50px #0008;
+    transform: rotate(-6deg);
+    transition: transform 0.6s;
+  }
+  .website-window:nth-child(2) {
+    top: 40%;
+    left: 30%;
+    transform: rotate(6deg);
+  }
+  .website-window img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .window-bar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    height: 22px;
+    padding-inline: 10px;
+    background: #1d2b31;
+    color: #becfd5;
+  }
+  .window-bar i {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #7c969f;
+  }
+  .window-bar span {
+    margin-left: auto;
+    font-size: 7px;
+    letter-spacing: 0.6px;
+  }
+  .category-project-names {
+    display: block;
+    margin-top: 20px;
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: var(--accent);
+  }
+  .category-project-names:empty {
+    display: none;
+  }
+  .category-art .art-header,
+  .category-art .art-caption {
+    z-index: 2;
+  }
+  .category-art .art-caption {
+    padding: 8px 10px;
+    border-radius: 6px;
+    background: #0a1319da;
+  }
+  .mobile-concept {
+    display: flex;
+    gap: 28px;
+    transform: rotate(-9deg) translateY(25px);
+  }
+  .concept-phone {
+    width: 122px;
+    height: 228px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 14px 16px;
+    gap: 15px;
+    border: 1px solid #72939f;
+    border-radius: 24px;
+    background: linear-gradient(145deg, #35515e, #14232c);
+    box-shadow: 10px 20px 50px #0006;
+  }
+  .concept-phone:nth-child(2) {
+    transform: translateY(30px);
+    background: linear-gradient(145deg, #c2dfe9, #6e98ac);
+    color: #19313e;
+  }
+  .concept-phone > span {
+    width: 35px;
+    height: 4px;
+    border-radius: 10px;
+    background: #07121c90;
+    margin-bottom: 28px;
+  }
+  .concept-phone > i {
+    width: 100%;
+    height: 24px;
+    border-radius: 5px;
+    background: #d0ebf219;
+  }
+  .platform-concept {
+    display: flex;
+    width: min(420px, 75%);
+    height: 220px;
+    border: 1px solid #66818b;
+    border-radius: 12px;
+    transform: rotate(-5deg);
+    background: #16242b;
+    overflow: hidden;
+    box-shadow: 20px 30px 70px #0006;
+  }
+  .concept-sidebar {
+    width: 55px;
+    border-right: 1px solid #46616a;
+    padding: 25px 15px;
+  }
+  .concept-sidebar > i {
+    display: block;
+    height: 6px;
+    border-radius: 4px;
+    background: #8ab1c1;
+    margin-bottom: 25px;
+  }
+  .concept-workspace {
+    flex: 1;
+    padding: 28px 20px;
+  }
+  .concept-workspace > span {
+    display: block;
+    width: 70%;
+    height: 7px;
+    background: #9dbfc8;
+    margin-top: 15px;
+    border-radius: 4px;
+  }
+  .concept-workspace > div {
+    display: flex;
+    gap: 12px;
+    margin-top: 25px;
+  }
+  .concept-workspace i {
+    height: 60px;
+    flex: 1;
+    border-radius: 5px;
+    background: #35515d;
+    border: 1px solid #668590;
+  }
+  @media (hover: hover) {
+    .category-art:hover .website-window:first-child {
+      transform: translateY(-10px) rotate(-8deg);
+    }
+    .category-art:hover .website-window:nth-child(2) {
+      transform: translateY(-5px) rotate(3deg);
+    }
+  }
+  @media (max-width: 760px) {
+    .website-window {
+      width: 78%;
+      top: 23%;
+      left: 2%;
+    }
+    .website-window:nth-child(2) {
+      top: 45%;
+      left: 26%;
+    }
+    .mobile-concept {
+      transform: rotate(-9deg) translateY(15px) scale(0.85);
+    }
+    .platform-concept {
+      height: 170px;
+    }
+    .concept-workspace {
+      padding: 20px 16px;
+    }
+    .concept-workspace i {
+      height: 40px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .website-window {
+      transition: none;
+    }
+    .category-art:hover .website-window:first-child {
+      transform: rotate(-6deg);
+    }
+    .category-art:hover .website-window:nth-child(2) {
+      transform: rotate(6deg);
+    }
+  }
+</style>

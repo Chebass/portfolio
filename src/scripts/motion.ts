@@ -4,12 +4,13 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 const media = gsap.matchMedia();
 media.add("(prefers-reduced-motion: no-preference)", () => {
-  gsap.from(".hero h1", {
-    y: 45,
-    opacity: 0,
-    duration: 1.2,
-    ease: "power3.out",
-  });
+  if (document.querySelector(".hero h1"))
+    gsap.from(".hero h1", {
+      y: 45,
+      opacity: 0,
+      duration: 1.2,
+      ease: "power3.out",
+    });
   gsap.utils.toArray<HTMLElement>(".reveal").forEach((element) => {
     gsap.from(element, {
       y: 28,
@@ -19,13 +20,14 @@ media.add("(prefers-reduced-motion: no-preference)", () => {
       scrollTrigger: { trigger: element, start: "top 94%", once: true },
     });
   });
-  gsap.to(".orb", {
-    rotation: 22,
-    duration: 16,
-    repeat: -1,
-    yoyo: true,
-    ease: "sine.inOut",
-  });
+  if (document.querySelector(".orb"))
+    gsap.to(".orb", {
+      rotation: 22,
+      duration: 16,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+    });
 });
 media.add(
   "(min-width: 901px) and (prefers-reduced-motion: no-preference)",

@@ -37,6 +37,10 @@ import {
   siHtml5,
   siCss,
   siMysql,
+  siAstro,
+  siVercel,
+  siSupabase,
+  siCloudflarepages,
 } from "simple-icons";
 import type { SimpleIcon } from "simple-icons";
 
@@ -98,6 +102,7 @@ export const technologyGroups: TechnologyGroup[] = [
     items: [
       brand("React", siReact),
       brand("Next.js", siNextdotjs),
+      brand("Astro", siAstro),
       brand("Redux Toolkit", siRedux),
       brand("RTK Query", siRedux),
       brand("Flutter", siFlutter),
@@ -148,6 +153,7 @@ export const technologyGroups: TechnologyGroup[] = [
       brand("Prisma ORM", siPrisma),
       image("SQL Server", "sql-server", true),
       brand("MySQL", siMysql),
+      brand("Supabase", siSupabase),
     ],
   },
   {
@@ -158,6 +164,8 @@ export const technologyGroups: TechnologyGroup[] = [
       "Infraestructura, contenedores, control de versiones y automatización de entregas.",
     items: [
       image("AWS", "aws", true),
+      brand("Vercel", siVercel),
+      brand("Cloudflare Pages", siCloudflarepages),
       brand("Docker", siDocker),
       brand("Git", siGit),
       brand("GitHub Actions", siGithubactions),
@@ -165,3 +173,13 @@ export const technologyGroups: TechnologyGroup[] = [
     ],
   },
 ];
+
+const technologyByName = new Map(
+  technologyGroups
+    .flatMap((group) => group.items)
+    .map((technology) => [technology.name, technology]),
+);
+
+export function getTechnology(name: string): Technology {
+  return technologyByName.get(name) ?? concept(name, CodeXml);
+}

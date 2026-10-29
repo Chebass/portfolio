@@ -1,0 +1,786 @@
+---
+import type { Project } from "../data/projects";
+import { ArrowUpRight, CodeXml, Scan, Check } from "@lucide/astro";
+import TechLogo from "./TechLogo.astro";
+import { getTechnology } from "../data/technologies";
+interface Props {
+  project: Project;
+  index: number;
+}
+const { project, index } = Astro.props;
+const host = project.demo ? new URL(project.demo).hostname : "";
+---
+
+<article class="project-case" aria-labelledby={`case-title-${project.slug}`}>
+  <header class="project-case-header">
+    <div>
+      <span class="eyebrow">
+        0{index + 1} / {project.category}
+      </span>
+      <h2 id={`case-title-${project.slug}`}>{project.title}</h2>
+      <p>{project.summary}</p>
+    </div>
+    <div class="project-case-actions">
+      {project.demo && (
+        <a
+          class="button button-light"
+          href={project.demo}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span>Visitar demo</span>
+          <span class="button-icon">
+            <ArrowUpRight size={18} aria-hidden="true" />
+          </span>
+        </a>
+      )}
+      {project.repository && (
+        <a
+          class="text-link"
+          href={project.repository}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Ver código <CodeXml size={16} aria-hidden="true" />
+        </a>
+      )}
+    </div>
+  </header>
+  <dl class="project-facts">
+    <div>
+      <dt>CONTEXTO</dt>
+      <dd>{project.context}</dd>
+    </div>
+    <div>
+      <dt>MI PARTICIPACIÓN</dt>
+      <dd>{project.role}</dd>
+    </div>
+    <div>
+      <dt>ESTADO</dt>
+      <dd>
+        <Check size={13} aria-hidden="true" /> Demo publicada
+      </dd>
+    </div>
+  </dl>
+  {project.cover && (
+    <figure class="case-browser" data-pointer-glow>
+      <div class="case-browser-bar">
+        <span class="browser-dots" aria-hidden="true">
+          <i></i>
+          <i></i>
+          <i></i>
+        </span>
+        <span>{host}</span>
+        <ArrowUpRight size={14} aria-hidden="true" />
+      </div>
+      <a
+        href={project.demo}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`Visitar la demo de ${project.title}`}
+      >
+        <img
+          src={project.cover}
+          alt={`Vista de inicio de ${project.title}`}
+          width="1440"
+          height="960"
+        />
+      </a>
+    </figure>
+  )}
+  <div class="case-details-layout">
+    <aside class="case-stack">
+      <span class="eyebrow">CONSTRUIDO CON</span>
+      <ul>
+        {project.technologies.map((technology) => (
+          <li>
+            <TechLogo technology={getTechnology(technology)} size={40} />
+            <span>{technology}</span>
+          </li>
+        ))}
+      </ul>
+    </aside>
+    <div class="case-story">
+      {[
+        ["01 / EL CONTEXTO", "Una necesidad concreta.", project.problem],
+        ["02 / MI CONTRIBUCIÓN", "Lo que construí.", project.contribution],
+        [
+          "03 / LA SOLUCIÓN",
+          "Del contenido a la experiencia.",
+          project.solution,
+        ],
+        ["04 / EL RESULTADO", "Una demo para explorar.", project.result],
+      ].map(([label, title, body]) => (
+        <section class="case-story-card" data-pointer-glow>
+          <span class="case-section-label">{label}</span>
+          <h3>{title}</h3>
+          <p>{body}</p>
+        </section>
+      ))}
+    </div>
+  </div>
+  {project.features && project.features.length > 0 && (
+    <section class="case-features" aria-labelledby={`features-${project.slug}`}>
+      <div class="case-subheading">
+        <span class="eyebrow">EN LA PRÁCTICA</span>
+        <h3 id={`features-${project.slug}`}>
+          Los detalles hacen <em>la experiencia.</em>
+        </h3>
+      </div>
+      <div class="case-feature-grid">
+        {project.features.map((feature, index) => (
+          <div class="case-feature-card" data-pointer-glow>
+            <span class="feature-number">0{index + 1}</span>
+            <h4>{feature.title}</h4>
+            <p>{feature.description}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+  {project.screenshots.length > 0 && (
+    <section class="case-captures" aria-labelledby={`captures-${project.slug}`}>
+      <div class="case-subheading">
+        <span class="eyebrow">EL PROYECTO EN PANTALLA</span>
+        <h3 id={`captures-${project.slug}`}>
+          Una mirada <em>más cerca.</em>
+        </h3>
+        <p>Capturas de la demo. Selecciona una para ampliarla.</p>
+      </div>
+      <div class="case-capture-grid">
+        {project.screenshots.map((image, index) => (
+          <figure
+            class:list={[
+              "case-capture",
+              { "capture-mobile": image.src.includes("/mobile.") },
+            ]}
+          >
+            <a
+              href={image.src}
+              data-capture-open
+              data-pointer-glow
+              data-caption={image.caption}
+              data-alt={image.alt}
+              aria-label={`Ampliar captura: ${image.alt}`}
+            >
+              <img
+                src={image.src}
+                alt={image.alt}
+                width={image.width}
+                height={image.height}
+                loading="lazy"
+              />
+              <span class="capture-expand">
+                <Scan size={16} aria-hidden="true" /> Ampliar
+              </span>
+            </a>
+            <figcaption>
+              <span>0{index + 1}</span>
+              {image.caption}
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+  )}
+</article>
+
+<style>
+  .project-case {
+    padding-top: 48px;
+  }
+  .project-case-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 40px;
+  }
+  .project-case-header h2 {
+    font-size: clamp(44px, 6vw, 85px);
+    letter-spacing: -3px;
+    line-height: 1.05;
+    margin: 20px 0;
+  }
+  .project-case-header p {
+    font-size: 15px;
+    line-height: 1.85;
+    max-width: 680px;
+    color: var(--muted);
+    margin: 0;
+  }
+  .project-case-actions {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+  .project-facts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 25px;
+    border-block: 1px solid var(--line);
+    padding: 24px 0;
+    margin: 38px 0;
+  }
+  .project-facts dt {
+    font-size: 8px;
+    letter-spacing: 1.5px;
+    color: #8ba6ae;
+    margin-bottom: 12px;
+    transition: color 0.3s;
+  }
+  .project-facts dd {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.6;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: translate 0.3s;
+  }
+  .project-facts dd :global(svg) {
+    color: #9dd8bd;
+    flex-shrink: 0;
+  }
+  .case-browser {
+    position: relative;
+    isolation: isolate;
+    margin: 0;
+    background: #19262c;
+    border: 1px solid #435961;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 30px 60px #0005;
+    transition:
+      border-color 0.4s,
+      box-shadow 0.4s;
+  }
+  .case-browser > a {
+    display: block;
+    overflow: hidden;
+  }
+  .case-browser-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+    padding: 14px 20px;
+    color: #aec1c7;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+  }
+  .browser-dots {
+    display: flex;
+    gap: 6px;
+  }
+  .browser-dots i {
+    width: 5px;
+    height: 5px;
+    background: #78929a;
+    border-radius: 50%;
+    transition:
+      background 0.3s,
+      scale 0.3s;
+  }
+  .case-browser img {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: transform 0.8s cubic-bezier(0.2, 0.65, 0.25, 1);
+  }
+  .case-details-layout {
+    display: grid;
+    grid-template-columns: 0.5fr 1.5fr;
+    gap: 70px;
+    margin: 75px 0;
+  }
+  .case-stack {
+    align-self: start;
+    position: sticky;
+    top: 35px;
+  }
+  .case-stack ul {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    list-style: none;
+    padding: 0;
+    margin-top: 25px;
+    color: #c4d5d9;
+    font-size: 13px;
+  }
+  .case-stack li {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    min-width: 0;
+    width: fit-content;
+    max-width: 100%;
+    padding: 9px 12px;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    transition:
+      background 0.3s,
+      border-color 0.3s,
+      translate 0.3s;
+  }
+  .case-stack li > span:last-child {
+    position: relative;
+    transition: color 0.3s;
+  }
+  .case-stack li > span:last-child::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 -6px;
+    height: 1px;
+    background: #9bc6d2;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+  }
+  .case-story {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 38px 45px;
+  }
+  .case-story section {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border: 1px solid #2c3a40;
+    padding: 24px;
+    border-radius: 14px;
+    background: linear-gradient(140deg, #19252b88, #10171955);
+    transition:
+      translate 0.35s,
+      border-color 0.35s,
+      box-shadow 0.35s;
+  }
+  .case-story section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 24px;
+    width: 38px;
+    height: 2px;
+    background: #a5d5e36b;
+    transform-origin: left;
+    transition:
+      width 0.45s,
+      background 0.35s;
+  }
+  .case-browser::after,
+  .case-story-card::after,
+  .case-feature-card::after,
+  .case-capture > a::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: radial-gradient(
+      340px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+      #d0ebf219,
+      transparent 70%
+    );
+    opacity: var(--spot-opacity, 0);
+    transition: opacity 0.35s;
+  }
+  .case-section-label {
+    display: inline-block;
+    font-size: 8px;
+    letter-spacing: 1.5px;
+    color: #93aeb7;
+    transition:
+      color 0.3s,
+      translate 0.3s;
+  }
+  .case-story h3 {
+    font-size: 24px;
+    line-height: 1.2;
+    letter-spacing: -0.7px;
+    margin: 16px 0;
+    transition: color 0.3s;
+  }
+  .case-story p {
+    font-size: 13px;
+    line-height: 1.9;
+    color: var(--muted);
+    margin: 0;
+  }
+  .case-features {
+    padding: 50px 0;
+    border-block: 1px solid var(--line);
+  }
+  .case-subheading h3 {
+    font-size: clamp(30px, 3.5vw, 48px);
+    font-weight: 400;
+    line-height: 1.15;
+    margin: 18px 0;
+    letter-spacing: -1.4px;
+  }
+  .case-subheading h3 em {
+    font-family: "Instrument Serif", serif;
+    color: var(--accent);
+    font-weight: 400;
+    font-size: 1.15em;
+  }
+  .case-subheading > p {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+  .case-feature-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 40px;
+  }
+  .feature-number {
+    display: block;
+    font-size: 42px;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -2px;
+    color: #7fa2af;
+    transition:
+      color 0.35s,
+      translate 0.35s;
+  }
+  .case-feature-card {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding: 26px 22px;
+    border: 1px solid #304047;
+    border-radius: 14px;
+    background: linear-gradient(150deg, #1b2b3277, #10171977);
+    transition:
+      translate 0.35s,
+      border-color 0.35s,
+      box-shadow 0.35s;
+  }
+  .case-feature-grid h4 {
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.3;
+    margin: 15px 0 12px;
+  }
+  .case-feature-grid p {
+    font-size: 12px;
+    line-height: 1.85;
+    color: var(--muted);
+    margin: 0;
+  }
+  .case-captures {
+    padding-top: 60px;
+  }
+  .case-capture-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 0.65fr);
+    gap: 35px 50px;
+    align-items: start;
+    margin-top: 35px;
+  }
+  .case-capture {
+    margin: 0;
+    min-width: 0;
+  }
+  .case-capture:nth-child(2) {
+    grid-column: 1;
+  }
+  .case-capture.capture-mobile {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    width: min(100%, 320px);
+    justify-self: center;
+  }
+  .case-capture > a {
+    display: block;
+    position: relative;
+    border: 1px solid #3d5058;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #142027;
+    isolation: isolate;
+    transition:
+      border-color 0.35s,
+      box-shadow 0.35s,
+      translate 0.35s;
+  }
+  .case-capture img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 430px;
+    object-fit: cover;
+    object-position: top;
+    transition: transform 0.5s;
+  }
+  .case-capture.capture-mobile img {
+    max-height: none;
+  }
+  .capture-expand {
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    position: absolute;
+    bottom: 14px;
+    right: 14px;
+    padding: 9px 12px;
+    background: #0c171de8;
+    border: 1px solid #9ab7c550;
+    border-radius: 25px;
+    font-size: 9px;
+    color: var(--accent);
+    backdrop-filter: blur(6px);
+    transition:
+      background 0.3s,
+      color 0.3s,
+      translate 0.3s;
+  }
+  .case-capture figcaption {
+    display: flex;
+    gap: 12px;
+    font-size: 11px;
+    line-height: 1.7;
+    color: var(--muted);
+    margin-top: 15px;
+  }
+  .case-capture figcaption > span {
+    color: #8eacb8;
+    flex-shrink: 0;
+  }
+  @media (hover: hover) {
+    .case-story section:hover,
+    .case-feature-card:hover {
+      translate: 0 -5px;
+      border-color: #7395a2;
+      box-shadow:
+        0 16px 35px #0004,
+        inset 0 1px #d0ebf20c;
+    }
+    .case-story section:hover::before {
+      width: calc(100% - 48px);
+      background: var(--accent);
+    }
+    .case-story section:hover .case-section-label {
+      color: var(--accent);
+      translate: 3px 0;
+    }
+    .case-story section:hover h3 {
+      color: var(--accent);
+    }
+    .case-feature-card:hover .feature-number {
+      color: var(--accent);
+      translate: 3px 0;
+    }
+    .case-stack li:hover {
+      background: #20343d66;
+      border-color: #49616b;
+      translate: 5px 0;
+    }
+    .case-stack li:hover :global(.tech-logo) {
+      transform: translateY(-2px) rotate(-5deg);
+      box-shadow: 0 8px 22px #0005;
+    }
+    .case-stack li:hover > span:last-child {
+      color: var(--accent);
+    }
+    .case-stack li:hover > span:last-child::after {
+      transform: scaleX(1);
+    }
+    .project-facts > div:hover dt {
+      color: var(--accent);
+    }
+    .project-facts > div:hover dd {
+      translate: 4px 0;
+    }
+    .case-browser:hover,
+    .case-browser:focus-within {
+      border-color: #aacdd8;
+      box-shadow:
+        0 30px 70px #0006,
+        0 0 28px #b0dce715;
+    }
+    .case-browser:hover img {
+      transform: scale(1.025);
+    }
+    .case-browser:hover .browser-dots i {
+      background: var(--accent);
+      scale: 1.2;
+    }
+    .case-capture > a:is(:hover, :focus-visible) {
+      border-color: var(--accent);
+      translate: 0 -4px;
+      box-shadow:
+        0 18px 35px #0005,
+        0 0 20px #a1d7e516;
+    }
+    .case-capture > a:is(:hover, :focus-visible) img {
+      transform: scale(1.04);
+    }
+    .case-capture > a:is(:hover, :focus-visible) .capture-expand {
+      background: var(--accent);
+      color: #142830;
+      translate: 0 -3px;
+    }
+  }
+  @media (max-width: 1000px) {
+    .case-details-layout {
+      gap: 35px;
+      grid-template-columns: 0.5fr 1.5fr;
+    }
+    .case-story {
+      gap: 28px;
+    }
+    .case-feature-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 30px;
+    }
+    .case-capture-grid {
+      gap: 30px;
+    }
+    .project-case-header {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 25px;
+    }
+    .project-case-header h2 {
+      font-size: 58px;
+    }
+  }
+  @media (max-width: 640px) {
+    .project-case {
+      padding-top: 35px;
+    }
+    .project-case-header h2 {
+      font-size: 46px;
+      letter-spacing: -2px;
+    }
+    .project-case-header p {
+      font-size: 13px;
+    }
+    .project-facts {
+      grid-template-columns: 1fr;
+      gap: 20px;
+      margin: 30px 0;
+    }
+    .project-facts > div {
+      display: grid;
+      grid-template-columns: 100px minmax(0, 1fr);
+      gap: 15px;
+      align-items: start;
+    }
+    .project-facts dt {
+      font-size: 7px;
+      line-height: 1.8;
+      margin-bottom: 0;
+    }
+    .project-facts dd {
+      font-size: 11px;
+    }
+    .case-browser-bar {
+      font-size: 8px;
+      padding: 12px;
+      gap: 12px;
+    }
+    .case-details-layout {
+      grid-template-columns: 1fr;
+      gap: 30px;
+      margin-block: 45px;
+    }
+    .case-stack {
+      position: static;
+    }
+    .case-stack ul {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+    .case-stack li {
+      font-size: 10px;
+      border: 1px solid #354850;
+      border-radius: 6px;
+      padding: 8px 11px;
+    }
+    .case-story {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+    .case-story h3 {
+      font-size: 24px;
+    }
+    .case-story section {
+      padding: 20px;
+    }
+    .case-feature-card {
+      padding: 22px 16px;
+    }
+    .feature-number {
+      font-size: 32px;
+    }
+    .case-features {
+      padding-block: 35px;
+    }
+    .case-feature-grid {
+      gap: 25px 20px;
+    }
+    .case-feature-grid h4 {
+      font-size: 15px;
+    }
+    .case-feature-grid p {
+      font-size: 11px;
+    }
+    .case-capture-grid {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+    .case-capture.capture-mobile {
+      grid-column: 1;
+      grid-row: auto;
+      max-width: 280px;
+    }
+    .case-capture img {
+      max-height: 360px;
+    }
+    .case-subheading h3 {
+      font-size: 34px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      transition: none !important;
+    }
+    .case-story section:hover,
+    .case-feature-card:hover,
+    .case-stack li:hover,
+    .case-story section:hover .case-section-label,
+    .case-feature-card:hover .feature-number,
+    .project-facts > div:hover dd,
+    .case-capture > a:is(:hover, :focus-visible),
+    .case-capture > a:is(:hover, :focus-visible) .capture-expand {
+      translate: none;
+    }
+    .case-browser:hover img,
+    .case-stack li:hover :global(.tech-logo),
+    .case-capture > a:is(:hover, :focus-visible) img {
+      transform: none;
+    }
+    .case-browser:hover .browser-dots i {
+      scale: 1;
+    }
+    .case-capture img {
+      transition: none;
+    }
+    .case-capture > a:hover img {
+      transform: none;
+    }
+  }
+</style>

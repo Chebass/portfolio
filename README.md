@@ -27,23 +27,31 @@ Se excluyen dependencias, archivos generados, herramientas temporales y `package
 - `src/pages/index.astro`: presentación, sobre mí y contacto. Contenido basado en el CV facilitado por Sebastian.
 - `src/components/AboutSection.astro`: sección editorial sobre Sebastian, experiencia y servicios, antes de los proyectos. Usa las fotos originales de `src/assets/about/`, optimizadas por Astro; el título universitario se amplía en un diálogo accesible.
 - `src/components/TechStack.astro`: seis cajones independientes, inicialmente cerrados, con apertura animada e icono y nombre para cada elemento. Funcionan con ratón, teclado y pantallas táctiles; sin JavaScript mantienen la apertura nativa de `details`.
+- `src/components/TechLogo.astro`: renderizador compartido de logos, colores y fondos de contraste para el stack y la sección «Construido con» de cada proyecto. El detalle busca las tecnologías por nombre en el mismo catálogo.
 - `src/data/technologies.ts`: categorías y tecnologías. Los lenguajes se presentan en un cajón transversal; frontend incluye web y móvil, y datos y DevOps tienen cajones separados. Los conceptos sin marca (RAG, embeddings, SQL, patrones y CI/CD) usan iconos representativos de Lucide. Los logos proceden de Simple Icons y SVG locales, con fuentes documentadas en `public/icons/tech/SOURCES.md`.
-- `src/data/projects.ts`: fuente de datos de las tres plantillas de proyecto.
-- `src/pages/proyectos/[slug].astro`: páginas de detalle generadas desde los datos.
+- `src/data/projects.ts`: tres categorías (sitios web, apps móviles y aplicaciones web). `websiteProjects` contiene los casos completos de SDI Ingenieros y Bajo la Red.
+- `src/components/ProjectCards.astro`: tarjetas de categorías con capturas reales o portadas conceptuales claramente identificadas.
+- `src/components/ProjectCase.astro`: detalle de cada proyecto: contexto, contribución, solución, resultado, funcionalidades y capturas.
+- `src/pages/proyectos/[slug].astro`: páginas por categoría, con pestañas accesibles para elegir un caso y visor de capturas.
 - `src/styles/global.css`: sistema visual y adaptación a móvil.
 - `src/styles/interactions.css`: iluminación, botones y estados interactivos de los enlaces.
 - `src/scripts/motion.ts`: entradas, movimiento ambiental y seguimiento del puntero en inicio, proyectos y cajones. La luz utiliza coordenadas locales y se oculta al salir; respeta movimiento reducido.
+- `src/scripts/project-motion.ts`: entradas por scroll en el caso visible, indicador deslizante de pestañas, progreso de lectura y apertura del visor. Al cambiar de proyecto limpia las animaciones anteriores; los cambios de preferencia de movimiento se aplican sin recargar la página.
 
-Los proyectos actuales son **plantillas explícitas**, no trabajos reales. No publicar como portfolio terminado hasta completar sus datos. No se ha añadido una descarga pública del CV.
+Sitios web ya incluye dos demos reales. Las categorías de apps móviles y aplicaciones web tienen espacios identificados como pendientes. No se ha añadido una descarga pública del CV.
 
 ## Cómo completar un proyecto
 
-1. Sustituir `title`, `slug`, `category` y `summary` por contenido real.
-2. Completar `problem`, `contribution`, `solution`, `result` y `technologies`.
-3. Colocar las capturas en `public/projects/<slug>/`.
-4. Añadir `cover: '/projects/<slug>/portada.webp'` y las entradas de `screenshots` con `src`, `alt` y `caption`.
-5. Añadir `demo` o `repository` solo cuando haya un enlace real y accesible. Son opcionales.
-6. Cambiar `template` a `false`. La portada se utiliza automáticamente en el inicio y en la página del proyecto.
+1. Añadir un objeto `Project` al arreglo `projects` de su categoría, con `title`, `slug`, `category` y `summary` reales.
+2. Completar `context`, `role`, `problem`, `contribution`, `solution`, `result`, `features` y `technologies`.
+3. Colocar las capturas en `public/projects/<categoria>/<proyecto>/`.
+4. Añadir `cover` y las entradas de `screenshots` con `src`, `alt`, `caption`, `width` y `height`. Un archivo `mobile.webp` se presenta como captura móvil en la galería.
+5. Añadir `demo` o `repository` solo cuando haya un enlace real y accesible. Son opcionales. La interfaz no muestra botones de código sin URL.
+6. Cambiar `template` a `false` en la categoría al incorporar sus casos. Las capturas se utilizan en el inicio y en el detalle.
+
+Las fichas de sitios web se pueden compartir con `/proyectos/sitios-web#sdi` y `/proyectos/sitios-web#under-net`. Las pestañas admiten flechas, Inicio, Fin y el historial del navegador. Sin JavaScript se muestran ambos casos y los enlaces funcionan como anclas.
+
+Las capturas de las demos fueron tomadas el 28 de octubre de 2026 y convertidas a WebP. SDI usa Astro y está alojado en Vercel; Bajo la Red usa Next.js/React, Supabase para reseñas y Cloudflare Pages. No se enviaron consultas ni reseñas para preparar este material. Quedan por ampliar los aprendizajes personales, fechas, métricas verificables y repositorios que Sebastian decida compartir.
 
 Material recomendado: una portada de aproximadamente 1600 × 1000, entre dos y cuatro capturas de flujos importantes y, opcionalmente, un video corto o grabación local. El texto alternativo describe lo que muestra cada imagen; el pie explica su relevancia. No presentar una portada conceptual como captura real.
 
@@ -51,7 +59,7 @@ Para trabajo privado o sin despliegue, documentar el caso con imágenes y una ex
 
 ## Estado y siguientes pasos
 
-Primera versión: inicio, tres plantillas de detalle, stack en cajones desplegables y contacto por correo, LinkedIn, GitHub, WhatsApp e Instagram. Pendientes de contenido: proyectos reales, capturas, resultados y enlaces opcionales; posible publicación IEEE y descarga del CV si se decide incluirlas.
+Primera versión: inicio, tres categorías de proyectos con dos casos web publicados, stack en cajones desplegables y contacto por correo, LinkedIn, GitHub, WhatsApp e Instagram. Pendientes: demos móviles, detalle de Laraigo y la aplicación para centros psicológicos; aprendizajes, resultados y enlaces opcionales de cada caso; posible publicación IEEE y descarga del CV.
 
 ## Despliegue en Vercel
 

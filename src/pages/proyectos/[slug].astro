@@ -1,111 +1,533 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import ProjectCase from "../../components/ProjectCase.astro";
 import { projects } from "../../data/projects";
-import { ArrowLeft, ArrowUpRight, CodeXml } from "@lucide/astro";
+import { ArrowLeft, ArrowUpRight, ArrowRight, X } from "@lucide/astro";
 export function getStaticPaths() {
-  return projects.map((project) => ({
-    params: { slug: project.slug },
-    props: { project },
+  return projects.map((category) => ({
+    params: { slug: category.slug },
+    props: { category },
   }));
 }
-const { project } = Astro.props;
+const { category } = Astro.props;
 ---
 
-<Layout title={`${project.title} — Sebastian Delgado`}>
-  <article class="shell case-study">
-    <a class="text-link" href="/#proyectos">
-      <ArrowLeft size={16} aria-hidden="true" /> Todos los proyectos
+<Layout
+  title={`${category.category} — Sebastian Delgado`}
+  description={category.summary}
+>
+  <div class="case-reading-progress" aria-hidden="true"></div>
+  <div class="shell category-page">
+    <a class="text-link category-back" href="/#proyectos">
+      <ArrowLeft size={16} aria-hidden="true" /> Todas las categorías
     </a>
-    <p class="eyebrow">
-      {project.category}
-      {project.template ? " / PLANTILLA EDITORIAL" : ""}
-    </p>
-    <h1>{project.title}</h1>
-    <p class="case-lead">{project.summary}</p>
-    {project.template && (
-      <aside class="template-note">
-        Este es un espacio de trabajo por completar. La portada es conceptual y
-        no representa un proyecto real.
-      </aside>
-    )}
-    {project.cover && (
-      <img
-        class="case-cover"
-        src={project.cover}
-        alt={`Vista principal de ${project.title}`}
-        width="1440"
-        height="900"
-      />
-    )}
-    <div class="case-links">
-      {project.demo && (
-        <a
-          class="button button-light"
-          href={project.demo}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <span>Ver demo</span>
-          <span class="button-icon">
-            <ArrowUpRight size={18} aria-hidden="true" />
-          </span>
-        </a>
-      )}
-      {project.repository && (
-        <a
-          class="button"
-          href={project.repository}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <span>Ver código</span>
-          <span class="button-icon">
-            <CodeXml size={18} aria-hidden="true" />
-          </span>
-        </a>
-      )}
-    </div>
-    {project.technologies.length > 0 && (
-      <p class="case-lead">{project.technologies.join(" · ")}</p>
-    )}
-    <div class="case-sections">
-      {[
-        ["01 / El problema", project.problem],
-        ["02 / Mi contribución", project.contribution],
-        ["03 / La solución", project.solution],
-        ["04 / Resultados y aprendizajes", project.result],
-      ].map(([title, body]) => (
-        <section>
-          <h2>{title}</h2>
-          <p>{body}</p>
-        </section>
-      ))}
-    </div>
-    <section class="case-gallery">
-      <h2>El proyecto en imágenes</h2>
-      {project.screenshots.length ? (
-        project.screenshots.map((image) => (
-          <figure>
-            <img
-              src={image.src}
-              alt={image.alt}
-              loading="lazy"
-              width="1440"
-              height="900"
-            />
-            <figcaption>{image.caption}</figcaption>
-          </figure>
-        ))
-      ) : (
+    <header class="category-heading">
+      <span class="eyebrow">TRABAJO SELECCIONADO / {category.category}</span>
+      <h1>{category.title}</h1>
+      <p>{category.summary}</p>
+    </header>
+    {category.projects.length > 0 ? (
+      <>
+        <nav class="case-tabs" aria-label="Seleccionar proyecto">
+          <span class="case-tab-indicator" aria-hidden="true"></span>
+          {category.projects.map((project, index) => (
+            <a
+              href={`#${project.slug}`}
+              id={`tab-${project.slug}`}
+              data-project-tab={project.slug}
+            >
+              <span>0{index + 1}</span>
+              <span>{project.title}</span>
+              <ArrowUpRight size={18} aria-hidden="true" />
+            </a>
+          ))}
+        </nav>
+        {category.projects.map((project, index) => (
+          <section
+            id={project.slug}
+            class="case-panel"
+            data-project-panel
+            aria-label={project.title}
+          >
+            <ProjectCase project={project} index={index} />
+          </section>
+        ))}
+      </>
+    ) : (
+      <section class="category-pending">
+        <span class="eyebrow">CASOS EN PREPARACIÓN</span>
+        <h2>
+          El siguiente capítulo,
+          <br />
+          <em>en camino.</em>
+        </h2>
         <p>
-          Añadir una portada y entre dos y cuatro capturas: vista principal,
-          flujo clave y detalle técnico. Una grabación local también puede
-          mostrar cómo funciona.
+          Estoy preparando el material de estos proyectos: pantallas, contexto y
+          mi participación en cada uno.
         </p>
-      )}
-    </section>
-    <a class="text-link" href="/#contacto">
-      ¿Construimos algo juntos? <ArrowUpRight size={16} aria-hidden="true" />
-    </a>
-  </article>
+        <div class="planned-projects">
+          {category.planned.map((name, index) => (
+            <div>
+              <span>0{index + 1}</span>
+              <h3>{name}</h3>
+              <span>POR INCORPORAR</span>
+            </div>
+          ))}
+        </div>
+        <a class="text-link" href="/proyectos/sitios-web">
+          Mientras tanto, explora los sitios web{" "}
+          <ArrowRight size={16} aria-hidden="true" />
+        </a>
+      </section>
+    )}
+    <div class="category-bottom">
+      <p>
+        ¿Tienes un proyecto en mente?
+        <br />
+        <em>Podemos empezar por una conversación.</em>
+      </p>
+      <a class="button button-light" href="/#contacto">
+        <span>Hablemos de tu idea</span>
+        <span class="button-icon">
+          <ArrowUpRight size={18} aria-hidden="true" />
+        </span>
+      </a>
+    </div>
+  </div>
+  <dialog class="capture-dialog" aria-labelledby="capture-title">
+    <div class="capture-dialog-header">
+      <h2 id="capture-title">El proyecto en detalle</h2>
+      <button
+        type="button"
+        data-capture-close
+        aria-label="Cerrar captura"
+        autofocus
+      >
+        <X size={22} aria-hidden="true" />
+      </button>
+    </div>
+    <img alt="" />
+    <p class="capture-dialog-caption"></p>
+  </dialog>
 </Layout>
+
+<script>
+  import { createProjectMotion } from "../../scripts/project-motion";
+  const motion = createProjectMotion();
+  const navigation = document.querySelector<HTMLElement>(".case-tabs");
+  const tabs = Array.from(
+    document.querySelectorAll<HTMLAnchorElement>("[data-project-tab]"),
+  );
+  const panels = Array.from(
+    document.querySelectorAll<HTMLElement>("[data-project-panel]"),
+  );
+  function selectProject(id: string, updateUrl = false, focus = false) {
+    const selected =
+      tabs.find((tab) => tab.dataset.projectTab === id) ?? tabs[0];
+    if (!selected) return;
+    tabs.forEach((tab) => {
+      const active = tab === selected;
+      tab.setAttribute("role", "tab");
+      tab.setAttribute("aria-selected", String(active));
+      tab.setAttribute("aria-controls", tab.dataset.projectTab!);
+      tab.tabIndex = active ? 0 : -1;
+    });
+    panels.forEach((panel) => {
+      panel.hidden = panel.id !== selected.dataset.projectTab;
+      panel.setAttribute("role", "tabpanel");
+      panel.setAttribute("aria-labelledby", `tab-${panel.id}`);
+      panel.tabIndex = 0;
+    });
+    if (updateUrl && location.hash !== selected.hash)
+      history.pushState(null, "", selected.hash);
+    if (focus) selected.focus({ preventScroll: true });
+    const panel = panels.find(
+      (panel) => panel.id === selected.dataset.projectTab,
+    );
+    if (panel) motion.activate(panel, selected);
+  }
+  if (navigation) {
+    navigation.setAttribute("role", "tablist");
+    selectProject(location.hash.slice(1));
+  }
+  tabs.forEach((tab, index) => {
+    tab.addEventListener("click", (event) => {
+      event.preventDefault();
+      selectProject(tab.dataset.projectTab!, true);
+    });
+    tab.addEventListener("keydown", (event) => {
+      if (event.key === " ") {
+        event.preventDefault();
+        selectProject(tab.dataset.projectTab!, true);
+        return;
+      }
+      let next = index;
+      if (event.key === "ArrowRight") next = (index + 1) % tabs.length;
+      else if (event.key === "ArrowLeft")
+        next = (index - 1 + tabs.length) % tabs.length;
+      else if (event.key === "Home") next = 0;
+      else if (event.key === "End") next = tabs.length - 1;
+      else return;
+      event.preventDefault();
+      selectProject(tabs[next].dataset.projectTab!, true, true);
+    });
+  });
+  window.addEventListener("popstate", () =>
+    selectProject(location.hash.slice(1)),
+  );
+  window.addEventListener("hashchange", () =>
+    selectProject(location.hash.slice(1)),
+  );
+  const viewer = document.querySelector<HTMLDialogElement>(".capture-dialog");
+  const image = viewer?.querySelector("img");
+  let previousOverflow = "";
+  let lastTrigger: HTMLAnchorElement | undefined;
+  if (viewer && image) {
+    document
+      .querySelectorAll<HTMLAnchorElement>("[data-capture-open]")
+      .forEach((trigger) =>
+        trigger.addEventListener("click", (event) => {
+          event.preventDefault();
+          lastTrigger = trigger;
+          image.src = trigger.href;
+          image.alt = trigger.dataset.alt ?? "";
+          viewer.querySelector(".capture-dialog-caption")!.textContent =
+            trigger.dataset.caption ?? "";
+          previousOverflow = document.body.style.overflow;
+          viewer.showModal();
+          motion.openViewer(viewer);
+          document.body.style.overflow = "hidden";
+        }),
+      );
+    viewer
+      .querySelector("[data-capture-close]")
+      ?.addEventListener("click", () => viewer.close());
+    viewer.addEventListener("click", (event) => {
+      if (event.target === viewer) viewer.close();
+    });
+    viewer.addEventListener("close", () => {
+      document.body.style.overflow = previousOverflow;
+      lastTrigger?.focus({ preventScroll: true });
+    });
+  }
+</script>
+
+<style>
+  .category-page {
+    padding-block: 45px 80px;
+  }
+  .category-back {
+    margin-top: 0;
+  }
+  .category-heading {
+    margin: 60px 0 40px;
+    max-width: 1050px;
+  }
+  .category-heading h1 {
+    font-size: clamp(45px, 6.4vw, 94px);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -4px;
+    margin: 25px 0;
+  }
+  .category-heading > p {
+    max-width: 650px;
+    font-size: 14px;
+    line-height: 1.9;
+    color: var(--muted);
+  }
+  .case-tabs {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    gap: 12px;
+    padding: 20px 0;
+    border-block: 1px solid var(--line);
+  }
+  .case-tabs > a {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    min-width: 240px;
+    padding: 18px 22px;
+    border: 1px solid #34484f;
+    border-radius: 12px;
+    background: #121c20;
+    color: var(--muted);
+    transition:
+      background 0.3s,
+      border-color 0.3s,
+      color 0.3s,
+      translate 0.3s,
+      box-shadow 0.3s;
+  }
+  .case-tabs > a > span:first-child {
+    font-size: 9px;
+    color: #7c9da8;
+  }
+  .case-tabs > a > span:nth-child(2) {
+    font-size: 14px;
+  }
+  .case-tabs > a :global(svg) {
+    margin-left: auto;
+  }
+  .case-tabs > a[aria-selected="true"] {
+    background: #d0ebf2;
+    color: #142126;
+    border-color: var(--accent);
+    box-shadow: 0 5px 25px #b5e3ee0e;
+  }
+  .case-tabs > a[aria-selected="true"] > span:first-child {
+    color: #496b77;
+  }
+  .case-panel[hidden] {
+    display: none;
+  }
+  .case-tab-indicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    border-radius: 12px;
+    background: var(--accent);
+    box-shadow: 0 8px 30px #a8d8e31a;
+    opacity: 0;
+  }
+  .case-tabs[data-motion-ready] .case-tab-indicator {
+    opacity: 1;
+  }
+  .case-tabs[data-motion-ready] > a[aria-selected="true"] {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+  }
+  .case-tabs > a :global(svg) {
+    transition: transform 0.3s;
+  }
+  .case-reading-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    transform: scaleX(0);
+    transform-origin: left;
+    z-index: 80;
+    background: linear-gradient(90deg, #6f9fab, var(--accent));
+    box-shadow: 0 0 12px #d0ebf250;
+    pointer-events: none;
+  }
+  .case-panel:focus-visible {
+    outline: 1px solid #7ba4b0;
+    outline-offset: 8px;
+  }
+  .category-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    border-top: 1px solid var(--line);
+    margin-top: 75px;
+    padding-top: 35px;
+  }
+  .category-bottom p {
+    font-size: 17px;
+    line-height: 1.6;
+    margin: 0;
+  }
+  .category-bottom p em {
+    font-family: "Instrument Serif", serif;
+    color: var(--accent);
+    font-size: 1.4em;
+  }
+  .category-pending {
+    padding: 50px 0;
+    max-width: 900px;
+  }
+  .category-pending h2 {
+    margin: 25px 0;
+  }
+  .category-pending > p {
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--muted);
+    max-width: 550px;
+  }
+  .planned-projects {
+    display: grid;
+    gap: 15px;
+    margin-top: 35px;
+  }
+  .planned-projects > div {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    padding: 25px;
+    border: 1px solid #34484f;
+    border-radius: 12px;
+    background: #111a1e;
+  }
+  .planned-projects span {
+    font-size: 8px;
+    letter-spacing: 1px;
+    color: #94adb6;
+  }
+  .planned-projects span:last-child {
+    margin-left: auto;
+  }
+  .planned-projects h3 {
+    font-size: 20px;
+    margin: 0;
+  }
+  .capture-dialog {
+    width: min(1150px, calc(100% - 32px));
+    max-height: calc(100dvh - 40px);
+    padding: 0;
+    border: 1px solid #526e78;
+    border-radius: 16px;
+    background: #0e181d;
+    color: var(--text);
+    box-shadow: 0 30px 100px #0009;
+  }
+  .capture-dialog::backdrop {
+    background: #03080cdd;
+    backdrop-filter: blur(10px);
+  }
+  .capture-dialog-header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 18px 22px;
+    background: #101b20;
+    border-bottom: 1px solid #344c57;
+  }
+  .capture-dialog-header h2 {
+    font-size: 17px;
+    letter-spacing: -0.3px;
+    margin: 0;
+  }
+  .capture-dialog-header button {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border: 1px solid #526e78;
+    border-radius: 50%;
+    background: #1b2b33;
+    color: var(--accent);
+    cursor: pointer;
+    transition:
+      background 0.25s,
+      rotate 0.25s;
+  }
+  .capture-dialog > img {
+    display: block;
+    width: auto;
+    max-width: calc(100% - 32px);
+    height: auto;
+    margin: 16px auto;
+    border-radius: 6px;
+  }
+  .capture-dialog-caption {
+    font-size: 12px;
+    line-height: 1.8;
+    color: var(--muted);
+    padding: 0 22px 18px;
+    margin: 0;
+  }
+  @media (hover: hover) {
+    .case-tabs > a:hover {
+      border-color: #a8cbd5;
+      box-shadow: inset 0 0 22px #a8d8e30c;
+    }
+    .category-back:hover :global(svg) {
+      transform: translateX(-4px);
+    }
+    .capture-dialog-header button:hover {
+      background: #304956;
+      rotate: 90deg;
+    }
+    .case-tabs > a:hover :global(svg) {
+      transform: translate(2px, -2px);
+    }
+  }
+  @media (max-width: 640px) {
+    .category-page {
+      padding-top: 25px;
+    }
+    .category-heading {
+      margin-top: 40px;
+    }
+    .category-heading h1 {
+      font-size: 47px;
+      letter-spacing: -2px;
+    }
+    .category-heading > p {
+      font-size: 13px;
+    }
+    .case-tabs {
+      gap: 10px;
+    }
+    .case-tabs > a {
+      flex: 1;
+      min-width: 0;
+      padding: 15px 12px;
+      gap: 10px;
+    }
+    .case-tabs > a > span:nth-child(2) {
+      font-size: 11px;
+      line-height: 1.6;
+    }
+    .case-tabs > a :global(svg) {
+      width: 14px;
+      flex-shrink: 0;
+    }
+    .category-bottom {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 24px;
+      margin-top: 50px;
+    }
+    .category-bottom p {
+      font-size: 15px;
+    }
+    .planned-projects > div {
+      flex-wrap: wrap;
+      padding: 20px;
+      gap: 15px;
+    }
+    .planned-projects h3 {
+      font-size: 18px;
+    }
+    .planned-projects span:last-child {
+      width: 100%;
+      margin: 0;
+    }
+    .capture-dialog-header {
+      padding: 14px;
+    }
+    .capture-dialog-header h2 {
+      font-size: 14px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .case-reading-progress {
+      display: none;
+    }
+    .case-panel:not([hidden]) {
+      animation: none;
+    }
+    .case-tabs > a {
+      transition: none;
+    }
+    .case-tabs > a:hover :global(svg) {
+      transform: none;
+    }
+  }
+</style>
