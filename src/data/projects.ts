@@ -406,7 +406,7 @@ export const mobileProjects: Project[] = [
     coverHeight: 1000,
     template: false,
     problem:
-      "Dibujar en el celular suele quedar en hojas sueltas que se pierden en la galería. Siqiy propone reunir esos trazos en libros: elegir una portada, ordenar las páginas y recorrerlas como si se hojeara un cuaderno.",
+      "Lo que se dibuja en el celular suele quedar en hojas sueltas que se pierden en la galería. Siqiy propone reunir esos trazos en libros: elegir una portada, ordenar las páginas y recorrerlas como si se hojeara un cuaderno.",
     contribution:
       "Concebí la propuesta y desarrollé la app completa: biblioteca, gestión de libros y hojas sueltas, el editor de dibujo con sus herramientas, el guardado local con recuperación y la exportación a PNG y PDF.",
     solutionTitle: "Del trazo al libro.",

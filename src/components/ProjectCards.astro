@@ -216,6 +216,12 @@ import { projects } from "../data/projects";
     background: linear-gradient(145deg, #c2dfe9, #6e98ac);
     color: #19313e;
   }
+  .mobile-concept.mobile-previews {
+    transform: rotate(-9deg) translateY(-6px);
+  }
+  .mobile-previews .concept-phone:nth-child(2) {
+    transform: translateY(18px);
+  }
   .mobile-previews .concept-phone {
     width: 138px;
     height: 292px;
@@ -298,7 +304,7 @@ import { projects } from "../data/projects";
       transform: translateY(-10px);
     }
     .category-art:hover .mobile-previews .concept-phone:nth-child(2) {
-      transform: translateY(18px);
+      transform: translateY(8px);
     }
     .category-art:hover .website-window:first-child {
       transform: translateY(-10px) rotate(-8deg);
@@ -320,6 +326,9 @@ import { projects } from "../data/projects";
     .mobile-concept {
       transform: rotate(-9deg) translateY(15px) scale(0.85);
     }
+    .mobile-concept.mobile-previews {
+      transform: rotate(-9deg) translateY(10px) scale(0.68);
+    }
     .platform-concept {
       height: 170px;
     }
@@ -337,6 +346,12 @@ import { projects } from "../data/projects";
     }
     .category-art:hover .website-window:first-child {
       transform: rotate(-6deg);
+    }
+    .category-art:hover .mobile-previews .concept-phone:first-child {
+      transform: none;
+    }
+    .category-art:hover .mobile-previews .concept-phone:nth-child(2) {
+      transform: translateY(18px);
     }
     .category-art:hover .website-window:nth-child(2) {
       transform: rotate(6deg);
