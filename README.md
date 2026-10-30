@@ -29,7 +29,7 @@ Se excluyen dependencias, archivos generados, herramientas temporales y `package
 - `src/components/TechStack.astro`: seis cajones independientes, inicialmente cerrados, con apertura animada e icono y nombre para cada elemento. Funcionan con ratón, teclado y pantallas táctiles; sin JavaScript mantienen la apertura nativa de `details`.
 - `src/components/TechLogo.astro`: renderizador compartido de logos, colores y fondos de contraste para el stack y la sección «Construido con» de cada proyecto. El detalle busca las tecnologías por nombre en el mismo catálogo.
 - `src/data/technologies.ts`: categorías y tecnologías. Los lenguajes se presentan en un cajón transversal; frontend incluye web y móvil, y datos y DevOps tienen cajones separados. Los conceptos sin marca (RAG, embeddings, SQL, patrones y CI/CD) usan iconos representativos de Lucide. Los logos proceden de Simple Icons y SVG locales, con fuentes documentadas en `public/icons/tech/SOURCES.md`.
-- `src/data/projects.ts`: tres categorías (sitios web, apps móviles y aplicaciones web). `websiteProjects` contiene los casos completos de SDI Ingenieros y Bajo la Red.
+- `src/data/projects.ts`: tres categorías (sitios web, apps móviles y aplicaciones web). `websiteProjects` contiene SDI Ingenieros y Bajo la Red; `mobileProjects`, Siqiy y Calma; `webAppProjects`, Mindy y Laraigo. `device: "mobile"` presenta todas las capturas de un caso como pantallas de teléfono.
 - `src/components/ProjectCards.astro`: tarjetas de categorías con capturas reales o portadas conceptuales claramente identificadas.
 - `src/components/ProjectCase.astro`: detalle de cada proyecto: contexto, contribución, solución, resultado, funcionalidades y capturas.
 - `src/pages/proyectos/[slug].astro`: páginas por categoría, con pestañas accesibles para elegir un caso y visor de capturas.
@@ -38,7 +38,7 @@ Se excluyen dependencias, archivos generados, herramientas temporales y `package
 - `src/scripts/motion.ts`: entradas, movimiento ambiental y seguimiento del puntero en inicio, proyectos y cajones. La luz utiliza coordenadas locales y se oculta al salir; respeta movimiento reducido.
 - `src/scripts/project-motion.ts`: entradas por scroll en el caso visible, indicador deslizante de pestañas, progreso de lectura y apertura del visor. Al cambiar de proyecto limpia las animaciones anteriores; los cambios de preferencia de movimiento se aplican sin recargar la página.
 
-Sitios web ya incluye dos demos reales. Las categorías de apps móviles y aplicaciones web tienen espacios identificados como pendientes. No se ha añadido una descarga pública del CV.
+Las tres categorías tienen dos casos cada una. No se ha añadido una descarga pública del CV.
 
 ## Cómo completar un proyecto
 
@@ -59,13 +59,19 @@ Para trabajo privado o sin despliegue, documentar el caso con imágenes y una ex
 
 ## Estado y siguientes pasos
 
-Primera versión: inicio, tres categorías de proyectos con dos sitios web y dos casos de aplicaciones web, stack en cajones desplegables y contacto por correo, LinkedIn, GitHub, WhatsApp e Instagram. Pendientes: demos móviles; aprendizajes, resultados y enlaces opcionales de cada caso; posible publicación IEEE y descarga del CV.
+Primera versión: inicio, tres categorías de proyectos (sitios web, apps móviles y aplicaciones web) con dos casos cada una, stack en cajones desplegables y contacto por correo, LinkedIn, GitHub, WhatsApp e Instagram. Pendientes: aprendizajes, resultados y enlaces opcionales de cada caso; posible publicación IEEE y descarga del CV.
 
 Los casos `/proyectos/aplicaciones-web#mindy` y `/proyectos/aplicaciones-web#laraigo` comparten las pestañas, animaciones y galería ampliable de los sitios web. Las once capturas originales facilitadas por Sebastian se optimizaron a WebP (máximo 1600 px) y están en `public/projects/aplicaciones-web/`.
 
 Mindy se documenta como proyecto personal y demo con datos ficticios, a partir del README del proyecto y las capturas entregadas. Los avisos dentro de la app están implementados; los correos, la ampliación de la configuración del centro y su adaptación a otras especialidades se presentan como pendientes o proyección futura. No se publica una URL de demo ni de código sin disponer de ella.
 
 Laraigo se atribuye expresamente a la empresa y la participación se limita a los módulos descritos por Sebastian. El botón lleva a su web comercial, no a una demo personal. El resumen público se contrastó con [Laraigo](https://www.laraigo.com/) y su [guía de agentes IA](https://academy.laraigo.com/2025/09/29/entrenamiento-de-agente-genai-en-laraigo/). La lista de IA representa el alcance de la participación, no el stack completo del producto. Los modelos concretos visibles en las capturas no se presentan como catálogo vigente de proveedores.
+
+Los casos `/proyectos/apps-moviles#siqiy` y `/proyectos/apps-moviles#calma` usan una galería de pantallas de teléfono; el visor ajusta las capturas verticales a la altura de la ventana. En el inicio, la tarjeta de apps móviles muestra la primera captura de cada caso dentro de un teléfono.
+
+Siqiy (Flutter, demo local en Android, sin backend) se documenta a partir de su README y su repositorio público. Las capturas se generaron el 30 de octubre de 2026 con el entorno de pruebas de Flutter 3.47.7 en un lienzo de 390 × 844, con dibujos de ejemplo creados para la ocasión; la exportación PDF, la importación de fotos y el rendimiento en hardware real no aparecen en ellas.
+
+Calma es una plantilla de reservas mobile first (Next.js, Supabase, PWA) para pequeños negocios. «Calma» es un nombre de ejemplo aplicado solo a la demo visual; el proyecto original usa otro nombre y no se enlaza. Las capturas se tomaron el 30 de octubre de 2026 en modo demostración local con datos ficticios, a 390 × 844. No se hicieron reservas reales ni se enviaron mensajes. Las portadas de ambos casos son composiciones de tres capturas reales.
 
 ## Despliegue en Vercel
 
