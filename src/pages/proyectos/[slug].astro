@@ -193,6 +193,10 @@ const { category } = Astro.props;
           lastTrigger = trigger;
           image.src = trigger.href;
           image.alt = trigger.dataset.alt ?? "";
+          viewer.classList.toggle(
+            "capture-portrait",
+            "capturePortrait" in trigger.dataset,
+          );
           viewer.querySelector(".capture-dialog-caption")!.textContent =
             trigger.dataset.caption ?? "";
           previousOverflow = document.body.style.overflow;
@@ -451,6 +455,13 @@ const { category } = Astro.props;
     height: auto;
     margin: 16px auto;
     border-radius: 6px;
+  }
+  .capture-dialog.capture-portrait {
+    width: min(520px, calc(100% - 32px));
+  }
+  .capture-portrait .capture-dialog-content > img {
+    max-height: calc(100dvh - 210px);
+    border-radius: 14px;
   }
   .capture-dialog-caption {
     font-size: 12px;

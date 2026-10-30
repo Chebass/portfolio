@@ -168,17 +168,28 @@ const host = project.demo ? new URL(project.demo).hostname : "";
             "Capturas de la demo. Selecciona una para ampliarla."}
         </p>
       </div>
-      <div class="case-capture-grid">
+      <div
+        class:list={[
+          "case-capture-grid",
+          { "case-capture-grid-phones": project.device === "mobile" },
+        ]}
+      >
         {project.screenshots.map((image, index) => (
           <figure
             class:list={[
               "case-capture",
-              { "capture-mobile": image.src.includes("/mobile.") },
+              {
+                "capture-mobile":
+                  project.device === "mobile" || image.src.includes("/mobile."),
+              },
             ]}
           >
             <a
               href={image.src}
               data-capture-open
+              data-capture-portrait={
+                image.height > image.width ? true : undefined
+              }
               data-pointer-glow
               data-caption={image.caption}
               data-alt={image.alt}
@@ -544,6 +555,19 @@ const host = project.demo ? new URL(project.demo).hostname : "";
   .case-capture.capture-mobile img {
     max-height: none;
   }
+  .case-capture-grid.case-capture-grid-phones {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 40px 32px;
+  }
+  .case-capture-grid-phones .case-capture.capture-mobile {
+    grid-column: auto;
+    grid-row: auto;
+    width: 100%;
+    max-width: 300px;
+  }
+  .case-capture-grid-phones .case-capture > a {
+    border-radius: 26px;
+  }
   .capture-expand {
     z-index: 2;
     display: flex;
@@ -767,6 +791,17 @@ const host = project.demo ? new URL(project.demo).hostname : "";
       grid-column: 1;
       grid-row: auto;
       max-width: 280px;
+    }
+    .case-capture-grid.case-capture-grid-phones {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 26px 14px;
+    }
+    .case-capture-grid-phones .case-capture.capture-mobile {
+      grid-column: auto;
+      max-width: none;
+    }
+    .case-capture-grid-phones .case-capture > a {
+      border-radius: 18px;
     }
     .case-capture img {
       max-height: 360px;

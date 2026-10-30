@@ -21,7 +21,21 @@ import { projects } from "../data/projects";
             <ArrowUpRight size={20} stroke-width={1.5} aria-hidden="true" />
           </span>
         </div>
-        {category.projects.length ? (
+        {category.slug === "apps-moviles" && category.projects.length ? (
+          <div class="mobile-concept mobile-previews" aria-hidden="true">
+            {category.projects.map((project) => (
+              <div class="concept-phone">
+                <img
+                  src={project.screenshots[0].src}
+                  alt=""
+                  width={project.screenshots[0].width}
+                  height={project.screenshots[0].height}
+                  loading="lazy"
+                />
+              </div>
+            ))}
+          </div>
+        ) : category.projects.length ? (
           <div class="website-previews" aria-hidden="true">
             {category.projects.map((project) => (
               <div class="website-window">
@@ -202,6 +216,29 @@ import { projects } from "../data/projects";
     background: linear-gradient(145deg, #c2dfe9, #6e98ac);
     color: #19313e;
   }
+  .mobile-concept.mobile-previews {
+    transform: rotate(-9deg) translateY(-6px);
+  }
+  .mobile-previews .concept-phone:nth-child(2) {
+    transform: translateY(18px);
+  }
+  .mobile-previews .concept-phone {
+    width: 138px;
+    height: 292px;
+    padding: 6px;
+    border-radius: 22px;
+    background: #0d1418;
+    overflow: hidden;
+    transition: transform 0.6s;
+  }
+  .mobile-previews .concept-phone img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    border-radius: 17px;
+  }
   .concept-phone > span {
     width: 35px;
     height: 4px;
@@ -263,6 +300,12 @@ import { projects } from "../data/projects";
     border: 1px solid #668590;
   }
   @media (hover: hover) {
+    .category-art:hover .mobile-previews .concept-phone:first-child {
+      transform: translateY(-10px);
+    }
+    .category-art:hover .mobile-previews .concept-phone:nth-child(2) {
+      transform: translateY(8px);
+    }
     .category-art:hover .website-window:first-child {
       transform: translateY(-10px) rotate(-8deg);
     }
@@ -283,6 +326,9 @@ import { projects } from "../data/projects";
     .mobile-concept {
       transform: rotate(-9deg) translateY(15px) scale(0.85);
     }
+    .mobile-concept.mobile-previews {
+      transform: rotate(-9deg) translateY(10px) scale(0.68);
+    }
     .platform-concept {
       height: 170px;
     }
@@ -294,11 +340,18 @@ import { projects } from "../data/projects";
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    .website-window {
+    .website-window,
+    .mobile-previews .concept-phone {
       transition: none;
     }
     .category-art:hover .website-window:first-child {
       transform: rotate(-6deg);
+    }
+    .category-art:hover .mobile-previews .concept-phone:first-child {
+      transform: none;
+    }
+    .category-art:hover .mobile-previews .concept-phone:nth-child(2) {
+      transform: translateY(18px);
     }
     .category-art:hover .website-window:nth-child(2) {
       transform: rotate(6deg);
